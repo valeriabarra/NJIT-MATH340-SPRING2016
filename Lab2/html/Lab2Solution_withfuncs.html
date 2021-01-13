@@ -1,0 +1,442 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 2 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-04"><meta name="DC.source" content="Lab2Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 2 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Problem 1</a></li><li><a href="#3">Problem 2</a></li><li><a href="#4">Problem 3</a></li><li><a href="#5">Problem 4</a></li><li><a href="#6">Problem 5</a></li><li><a href="#7">Problem 6</a></li><li><a href="#8">Problem 7</a></li><li><a href="#9">Problem 8</a></li></ul><h2>Called Functions</h2><ul><li><a href="#MyBisection">MyBisection </a></li></ul></div><p>DUE Thuesday 02-02-2016</p><pre class="codeinput">clc; <span class="comment">% clears the command window</span>
+<span class="comment">%clear all; %clears all variables</span>
+</pre><h2>Problem 1<a name="2"></a></h2><pre class="codeinput">a = 2;
+b = 3;
+tol= 10^(-4);
+f1 = @(x)(x^3 -9);
+disp([<span class="string">'Execution of problem 1:'</span>])
+c1=MyBisection(f1,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 1:
+At the step i = 1 the best approximated root is c = 2.500000 in the interval [a, b] = [ 2, 2.5 ]
+At the step i = 2 the best approximated root is c = 2.250000 in the interval [a, b] = [ 2, 2.25 ]
+At the step i = 3 the best approximated root is c = 2.125000 in the interval [a, b] = [ 2, 2.125 ]
+At the step i = 4 the best approximated root is c = 2.062500 in the interval [a, b] = [ 2.0625, 2.125 ]
+At the step i = 5 the best approximated root is c = 2.093750 in the interval [a, b] = [ 2.0625, 2.09375 ]
+At the step i = 6 the best approximated root is c = 2.078125 in the interval [a, b] = [ 2.07813, 2.09375 ]
+At the step i = 7 the best approximated root is c = 2.085938 in the interval [a, b] = [ 2.07813, 2.08594 ]
+At the step i = 8 the best approximated root is c = 2.082031 in the interval [a, b] = [ 2.07813, 2.08203 ]
+At the step i = 9 the best approximated root is c = 2.080078 in the interval [a, b] = [ 2.08008, 2.08203 ]
+At the step i = 10 the best approximated root is c = 2.081055 in the interval [a, b] = [ 2.08008, 2.08105 ]
+At the step i = 11 the best approximated root is c = 2.080566 in the interval [a, b] = [ 2.08008, 2.08057 ]
+At the step i = 12 the best approximated root is c = 2.080322 in the interval [a, b] = [ 2.08008, 2.08032 ]
+At the step i = 13 the best approximated root is c = 2.080200 in the interval [a, b] = [ 2.08008, 2.0802 ]
+At the step i = 14 , the root found is 2.0801392
+The maximum number of steps estimated was 14 
+</pre><h2>Problem 2<a name="3"></a></h2><pre class="codeinput">a = 6;
+b = 7;
+tol= 10^(-4);
+f2 = @(x)(6 + (cos(x)).^2 - x);
+disp([<span class="string">'Execution of problem 2:'</span>])
+c2=MyBisection(f2,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 2:
+At the step i = 1 the best approximated root is c = 6.500000 in the interval [a, b] = [ 6.5, 7 ]
+At the step i = 2 the best approximated root is c = 6.750000 in the interval [a, b] = [ 6.75, 7 ]
+At the step i = 3 the best approximated root is c = 6.875000 in the interval [a, b] = [ 6.75, 6.875 ]
+At the step i = 4 the best approximated root is c = 6.812500 in the interval [a, b] = [ 6.75, 6.8125 ]
+At the step i = 5 the best approximated root is c = 6.781250 in the interval [a, b] = [ 6.75, 6.78125 ]
+At the step i = 6 the best approximated root is c = 6.765625 in the interval [a, b] = [ 6.76563, 6.78125 ]
+At the step i = 7 the best approximated root is c = 6.773438 in the interval [a, b] = [ 6.77344, 6.78125 ]
+At the step i = 8 the best approximated root is c = 6.777344 in the interval [a, b] = [ 6.77344, 6.77734 ]
+At the step i = 9 the best approximated root is c = 6.775391 in the interval [a, b] = [ 6.77539, 6.77734 ]
+At the step i = 10 the best approximated root is c = 6.776367 in the interval [a, b] = [ 6.77539, 6.77637 ]
+At the step i = 11 the best approximated root is c = 6.775879 in the interval [a, b] = [ 6.77588, 6.77637 ]
+At the step i = 12 the best approximated root is c = 6.776123 in the interval [a, b] = [ 6.77588, 6.77612 ]
+At the step i = 13 the best approximated root is c = 6.776001 in the interval [a, b] = [ 6.776, 6.77612 ]
+At the step i = 14 , the root found is 6.7760620
+The maximum number of steps estimated was 14 
+</pre><h2>Problem 3<a name="4"></a></h2><pre class="codeinput">f3=@(r)( ( 50000 + 10000./r ).* exp(20.*r) -10000./r - 1000000);
+a = 0;
+b = 1;
+tol = 10^(-6);
+disp([<span class="string">'Execution of problem 3:'</span>])
+c3=MyBisection(f3,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 3:
+At the step i = 1 the best approximated root is c = 0.500000 in the interval [a, b] = [ 0.5, 1 ]
+At the step i = 2 the best approximated root is c = 0.750000 in the interval [a, b] = [ 0.75, 1 ]
+At the step i = 3 the best approximated root is c = 0.875000 in the interval [a, b] = [ 0.875, 1 ]
+At the step i = 4 the best approximated root is c = 0.937500 in the interval [a, b] = [ 0.9375, 1 ]
+At the step i = 5 the best approximated root is c = 0.968750 in the interval [a, b] = [ 0.96875, 1 ]
+At the step i = 6 the best approximated root is c = 0.984375 in the interval [a, b] = [ 0.984375, 1 ]
+At the step i = 7 the best approximated root is c = 0.992188 in the interval [a, b] = [ 0.992188, 1 ]
+At the step i = 8 the best approximated root is c = 0.996094 in the interval [a, b] = [ 0.996094, 1 ]
+At the step i = 9 the best approximated root is c = 0.998047 in the interval [a, b] = [ 0.998047, 1 ]
+At the step i = 10 the best approximated root is c = 0.999023 in the interval [a, b] = [ 0.999023, 1 ]
+At the step i = 11 the best approximated root is c = 0.999512 in the interval [a, b] = [ 0.999512, 1 ]
+At the step i = 12 the best approximated root is c = 0.999756 in the interval [a, b] = [ 0.999756, 1 ]
+At the step i = 13 the best approximated root is c = 0.999878 in the interval [a, b] = [ 0.999878, 1 ]
+At the step i = 14 the best approximated root is c = 0.999939 in the interval [a, b] = [ 0.999939, 1 ]
+At the step i = 15 the best approximated root is c = 0.999969 in the interval [a, b] = [ 0.999969, 1 ]
+At the step i = 16 the best approximated root is c = 0.999985 in the interval [a, b] = [ 0.999985, 1 ]
+At the step i = 17 the best approximated root is c = 0.999992 in the interval [a, b] = [ 0.999992, 1 ]
+At the step i = 18 the best approximated root is c = 0.999996 in the interval [a, b] = [ 0.999996, 1 ]
+At the step i = 19 the best approximated root is c = 0.999998 in the interval [a, b] = [ 0.999998, 1 ]
+At the step i = 20 , the root found is 0.9999990
+The maximum number of steps estimated was 20 
+</pre><h2>Problem 4<a name="5"></a></h2><pre class="codeinput">f4= @(x)( (abs(x-2))./(x.^3 - 2* x.^2 + x -2) );
+a = 1;
+b = 4;
+tol = 10^(-4);
+disp([<span class="string">'Execution of problem 4:'</span>])
+c4=MyBisection(f4,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 4:
+At the step i = 1 the best approximated root is c = 2.500000 in the interval [a, b] = [ 1, 2.5 ]
+At the step i = 2 the best approximated root is c = 1.750000 in the interval [a, b] = [ 1.75, 2.5 ]
+At the step i = 3 the best approximated root is c = 2.125000 in the interval [a, b] = [ 1.75, 2.125 ]
+At the step i = 4 the best approximated root is c = 1.937500 in the interval [a, b] = [ 1.9375, 2.125 ]
+At the step i = 5 the best approximated root is c = 2.031250 in the interval [a, b] = [ 1.9375, 2.03125 ]
+At the step i = 6 the best approximated root is c = 1.984375 in the interval [a, b] = [ 1.98438, 2.03125 ]
+At the step i = 7 the best approximated root is c = 2.007813 in the interval [a, b] = [ 1.98438, 2.00781 ]
+At the step i = 8 the best approximated root is c = 1.996094 in the interval [a, b] = [ 1.99609, 2.00781 ]
+At the step i = 9 the best approximated root is c = 2.001953 in the interval [a, b] = [ 1.99609, 2.00195 ]
+At the step i = 10 the best approximated root is c = 1.999023 in the interval [a, b] = [ 1.99902, 2.00195 ]
+At the step i = 11 the best approximated root is c = 2.000488 in the interval [a, b] = [ 1.99902, 2.00049 ]
+At the step i = 12 the best approximated root is c = 1.999756 in the interval [a, b] = [ 1.99976, 2.00049 ]
+At the step i = 13 the best approximated root is c = 2.000122 in the interval [a, b] = [ 1.99976, 2.00012 ]
+At the step i = 14 the best approximated root is c = 1.999939 in the interval [a, b] = [ 1.99994, 2.00012 ]
+At the step i = 15 , the root found is 2.0000305
+The maximum number of steps estimated was 15 
+</pre><h2>Problem 5<a name="6"></a></h2><pre class="codeinput">a = 4;
+b = 6;
+disp([<span class="string">'Execution of problem 5:'</span>])
+c5=MyBisection(f4,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 5:
+f(a)f(b)&lt;0 not satisfied!
+</pre><h2>Problem 6<a name="7"></a></h2><pre class="codeinput">f6= @(x) (abs(x).*exp(x) - 0.25);
+a1 = -3; b1 = -2;
+a2 = -1; b2 = 0;
+a3 = 0; b3 = 1;
+disp([<span class="string">'Execution of problem 6: first root'</span>])
+c61=MyBisection(f6,a1,b1,tol);
+disp([<span class="string">'Execution of problem 6: second root'</span>])
+c62=MyBisection(f6,a2,b2,tol);
+disp([<span class="string">'Execution of problem 6: third root'</span>])
+c63=MyBisection(f6,a3,b3,tol);
+</pre><pre class="codeoutput">Execution of problem 6: first root
+At the step i = 1 the best approximated root is c = -2.500000 in the interval [a, b] = [ -2.5, -2 ]
+At the step i = 2 the best approximated root is c = -2.250000 in the interval [a, b] = [ -2.25, -2 ]
+At the step i = 3 the best approximated root is c = -2.125000 in the interval [a, b] = [ -2.25, -2.125 ]
+At the step i = 4 the best approximated root is c = -2.187500 in the interval [a, b] = [ -2.1875, -2.125 ]
+At the step i = 5 the best approximated root is c = -2.156250 in the interval [a, b] = [ -2.15625, -2.125 ]
+At the step i = 6 the best approximated root is c = -2.140625 in the interval [a, b] = [ -2.15625, -2.14063 ]
+At the step i = 7 the best approximated root is c = -2.148438 in the interval [a, b] = [ -2.15625, -2.14844 ]
+At the step i = 8 the best approximated root is c = -2.152344 in the interval [a, b] = [ -2.15625, -2.15234 ]
+At the step i = 9 the best approximated root is c = -2.154297 in the interval [a, b] = [ -2.1543, -2.15234 ]
+At the step i = 10 the best approximated root is c = -2.153320 in the interval [a, b] = [ -2.15332, -2.15234 ]
+At the step i = 11 the best approximated root is c = -2.152832 in the interval [a, b] = [ -2.15332, -2.15283 ]
+At the step i = 12 the best approximated root is c = -2.153076 in the interval [a, b] = [ -2.15332, -2.15308 ]
+At the step i = 13 the best approximated root is c = -2.153198 in the interval [a, b] = [ -2.15332, -2.1532 ]
+At the step i = 14 , the root found is -2.1532593
+The maximum number of steps estimated was 14 
+Execution of problem 6: second root
+At the step i = 1 the best approximated root is c = -0.500000 in the interval [a, b] = [ -0.5, 0 ]
+At the step i = 2 the best approximated root is c = -0.250000 in the interval [a, b] = [ -0.5, -0.25 ]
+At the step i = 3 the best approximated root is c = -0.375000 in the interval [a, b] = [ -0.375, -0.25 ]
+At the step i = 4 the best approximated root is c = -0.312500 in the interval [a, b] = [ -0.375, -0.3125 ]
+At the step i = 5 the best approximated root is c = -0.343750 in the interval [a, b] = [ -0.375, -0.34375 ]
+At the step i = 6 the best approximated root is c = -0.359375 in the interval [a, b] = [ -0.359375, -0.34375 ]
+At the step i = 7 the best approximated root is c = -0.351563 in the interval [a, b] = [ -0.359375, -0.351563 ]
+At the step i = 8 the best approximated root is c = -0.355469 in the interval [a, b] = [ -0.359375, -0.355469 ]
+At the step i = 9 the best approximated root is c = -0.357422 in the interval [a, b] = [ -0.357422, -0.355469 ]
+At the step i = 10 the best approximated root is c = -0.356445 in the interval [a, b] = [ -0.357422, -0.356445 ]
+At the step i = 11 the best approximated root is c = -0.356934 in the interval [a, b] = [ -0.357422, -0.356934 ]
+At the step i = 12 the best approximated root is c = -0.357178 in the interval [a, b] = [ -0.357422, -0.357178 ]
+At the step i = 13 the best approximated root is c = -0.357300 in the interval [a, b] = [ -0.357422, -0.3573 ]
+At the step i = 14 , the root found is -0.3573608
+The maximum number of steps estimated was 14 
+Execution of problem 6: third root
+At the step i = 1 the best approximated root is c = 0.500000 in the interval [a, b] = [ 0, 0.5 ]
+At the step i = 2 the best approximated root is c = 0.250000 in the interval [a, b] = [ 0, 0.25 ]
+At the step i = 3 the best approximated root is c = 0.125000 in the interval [a, b] = [ 0.125, 0.25 ]
+At the step i = 4 the best approximated root is c = 0.187500 in the interval [a, b] = [ 0.1875, 0.25 ]
+At the step i = 5 the best approximated root is c = 0.218750 in the interval [a, b] = [ 0.1875, 0.21875 ]
+At the step i = 6 the best approximated root is c = 0.203125 in the interval [a, b] = [ 0.203125, 0.21875 ]
+At the step i = 7 the best approximated root is c = 0.210938 in the interval [a, b] = [ 0.203125, 0.210938 ]
+At the step i = 8 the best approximated root is c = 0.207031 in the interval [a, b] = [ 0.203125, 0.207031 ]
+At the step i = 9 the best approximated root is c = 0.205078 in the interval [a, b] = [ 0.203125, 0.205078 ]
+At the step i = 10 the best approximated root is c = 0.204102 in the interval [a, b] = [ 0.203125, 0.204102 ]
+At the step i = 11 the best approximated root is c = 0.203613 in the interval [a, b] = [ 0.203613, 0.204102 ]
+At the step i = 12 the best approximated root is c = 0.203857 in the interval [a, b] = [ 0.203857, 0.204102 ]
+At the step i = 13 the best approximated root is c = 0.203979 in the interval [a, b] = [ 0.203857, 0.203979 ]
+At the step i = 14 , the root found is 0.2039185
+The maximum number of steps estimated was 14 
+</pre><h2>Problem 7<a name="8"></a></h2><pre class="codeinput">f7 = @(x)(27* x.^3 - 27 *x.^2 + 9.*x - 1);
+tol = 1e-6;
+a = 0;
+b = 1;
+disp([<span class="string">'Execution of problem 7:'</span>])
+c7=MyBisection(f7,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 7:
+At the step i = 1 the best approximated root is c = 0.500000 in the interval [a, b] = [ 0, 0.5 ]
+At the step i = 2 the best approximated root is c = 0.250000 in the interval [a, b] = [ 0.25, 0.5 ]
+At the step i = 3 the best approximated root is c = 0.375000 in the interval [a, b] = [ 0.25, 0.375 ]
+At the step i = 4 the best approximated root is c = 0.312500 in the interval [a, b] = [ 0.3125, 0.375 ]
+At the step i = 5 the best approximated root is c = 0.343750 in the interval [a, b] = [ 0.3125, 0.34375 ]
+At the step i = 6 the best approximated root is c = 0.328125 in the interval [a, b] = [ 0.328125, 0.34375 ]
+At the step i = 7 the best approximated root is c = 0.335938 in the interval [a, b] = [ 0.328125, 0.335938 ]
+At the step i = 8 the best approximated root is c = 0.332031 in the interval [a, b] = [ 0.332031, 0.335938 ]
+At the step i = 9 the best approximated root is c = 0.333984 in the interval [a, b] = [ 0.332031, 0.333984 ]
+At the step i = 10 the best approximated root is c = 0.333008 in the interval [a, b] = [ 0.333008, 0.333984 ]
+At the step i = 11 the best approximated root is c = 0.333496 in the interval [a, b] = [ 0.333008, 0.333496 ]
+At the step i = 12 the best approximated root is c = 0.333252 in the interval [a, b] = [ 0.333252, 0.333496 ]
+At the step i = 13 the best approximated root is c = 0.333374 in the interval [a, b] = [ 0.333252, 0.333374 ]
+At the step i = 14 the best approximated root is c = 0.333313 in the interval [a, b] = [ 0.333313, 0.333374 ]
+At the step i = 15 the best approximated root is c = 0.333344 in the interval [a, b] = [ 0.333313, 0.333344 ]
+At the step i = 16 the best approximated root is c = 0.333328 in the interval [a, b] = [ 0.333328, 0.333344 ]
+At the step i = 17 the best approximated root is c = 0.333336 in the interval [a, b] = [ 0.333328, 0.333336 ]
+At the step i = 18 the exact root is c = 0.33333 in the interval [a, b] = [0.33333, 0.33334]
+The maximum number of steps estimated was 20 
+</pre><h2>Problem 8<a name="9"></a></h2><pre class="codeinput">f8 = @(x) (64 .*x.^3 - 48.*x.^2 + 12.*x - 1);
+disp([<span class="string">'Execution of problem 8:'</span>])
+c8=MyBisection(f8,a,b,tol);
+</pre><pre class="codeoutput">Execution of problem 8:
+At the step i = 1 the best approximated root is c = 0.500000 in the interval [a, b] = [ 0, 0.5 ]
+At the step i = 2 the exact root is c = 0.25 in the interval [a, b] = [0, 0.5]
+The maximum number of steps estimated was 20 
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 2 Solution
+% Lab Instructor: Valeria Barra
+%%
+% DUE Thuesday 02-02-2016
+
+clc; % clears the command window
+%clear all; %clears all variables
+
+%% Problem 1
+a = 2;
+b = 3;
+tol= 10^(-4);
+f1 = @(x)(x^3 -9);
+disp(['Execution of problem 1:'])
+c1=MyBisection(f1,a,b,tol);
+
+%% Problem 2
+
+a = 6;
+b = 7;
+tol= 10^(-4);
+f2 = @(x)(6 + (cos(x)).^2 - x);
+disp(['Execution of problem 2:'])
+c2=MyBisection(f2,a,b,tol);
+
+%% Problem 3
+f3=@(r)( ( 50000 + 10000./r ).* exp(20.*r) -10000./r - 1000000);
+a = 0;
+b = 1;
+tol = 10^(-6);
+disp(['Execution of problem 3:'])
+c3=MyBisection(f3,a,b,tol);
+
+%% Problem 4
+f4= @(x)( (abs(x-2))./(x.^3 - 2* x.^2 + x -2) );
+a = 1;
+b = 4;
+tol = 10^(-4);
+disp(['Execution of problem 4:'])
+c4=MyBisection(f4,a,b,tol);
+
+%% Problem 5
+a = 4;
+b = 6;
+disp(['Execution of problem 5:'])
+c5=MyBisection(f4,a,b,tol);
+
+%% Problem 6
+f6= @(x) (abs(x).*exp(x) - 0.25);
+a1 = -3; b1 = -2;
+a2 = -1; b2 = 0;
+a3 = 0; b3 = 1;
+disp(['Execution of problem 6: first root'])
+c61=MyBisection(f6,a1,b1,tol);
+disp(['Execution of problem 6: second root'])
+c62=MyBisection(f6,a2,b2,tol);
+disp(['Execution of problem 6: third root'])
+c63=MyBisection(f6,a3,b3,tol);
+
+%% Problem 7 
+f7 = @(x)(27* x.^3 - 27 *x.^2 + 9.*x - 1);
+tol = 1e-6;
+a = 0; 
+b = 1;
+disp(['Execution of problem 7:'])
+c7=MyBisection(f7,a,b,tol);
+
+%% Problem 8 
+f8 = @(x) (64 .*x.^3 - 48.*x.^2 + 12.*x - 1);
+disp(['Execution of problem 8:'])
+c8=MyBisection(f8,a,b,tol);
+##### SOURCE END #####
+--></body></html>
+<a name="MyBisection"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MyBisection</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-04"><meta name="DC.source" content="MyBisection.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> c=MyBisection(f,a,b,tol)
+c = 0; <span class="comment">% it initializes the returning value, in case of failure</span>
+ainit = a;
+binit = b;
+<span class="keyword">if</span> sign(f(a))*sign(f(b)) &gt;= 0
+    disp(<span class="string">'f(a)f(b)&lt;0 not satisfied!'</span>)
+    <span class="keyword">return</span> <span class="comment">%ceases execution</span>
+<span class="keyword">end</span>
+fa=f(a);
+fb=f(b);
+i=0; <span class="comment">% counter variable</span>
+<span class="keyword">while</span> (b-a)/2&gt;tol
+     i = i+1;
+    c=(a+b)/2;
+    fc=f(c);
+    <span class="keyword">if</span> fc == 0 <span class="comment">%c is a solution, done</span>
+        disp([<span class="string">'At the step i = '</span>,num2str(i),<span class="string">' the exact root is c = '</span>,num2str(c),<span class="string">' in the interval [a, b] = ['</span>,num2str(a),<span class="string">', '</span>,num2str(b),<span class="string">']'</span>]);
+        fprintf(<span class="string">'The maximum number of steps estimated was %d \n'</span>,ceil( -log2(tol) + log2(binit - ainit)))
+        <span class="keyword">return</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> sign(fc)*sign(fa)&lt;0 <span class="comment">%a and c make the new interval</span>
+        b=c;
+        fb=fc;
+    <span class="keyword">else</span> <span class="comment">%c and b make the new interval</span>
+        a=c;
+        fa=fc;
+    <span class="keyword">end</span>
+    fprintf(<span class="string">'At the step i = %d the best approximated root is c = %8.6f in the interval [a, b] = [ %g, %g ]\n'</span>,i,c,a,b );
+<span class="keyword">end</span>
+c=(a+b)/2;
+fprintf(<span class="string">'At the step i = %d , the root found is %8.7f\n'</span>,i+1,c)
+fprintf(<span class="string">'The maximum number of steps estimated was %d \n'</span>,ceil( -log2(tol) + log2(binit - ainit)))
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>

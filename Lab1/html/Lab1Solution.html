@@ -1,0 +1,291 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 1 Assignment - Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-01-28"><meta name="DC.source" content="Lab1Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 1 Assignment - Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Exercise 1</a></li><li><a href="#5">Exercise 2</a></li><li><a href="#7">Exercise 3</a></li><li><a href="#9">Exercise 4</a></li></ul></div><p>DUE Tuesday 01/26/16</p><h2>Exercise 1<a name="2"></a></h2><p>Problem statement: Write a MATLAB program calculating</p><p><img src="Lab1Solution_eq06030633520568706070.png" alt="$$S=\sum_{k=0}^{100}\frac{(-1)^k}{k!} .$$"></p><p><b>Solution:</b></p><pre class="codeinput">n=100; <span class="comment">% How far we&#8217;re summing up to</span>
+S=0; <span class="comment">% The sum variable S starts out at 0</span>
+<span class="keyword">for</span> k = 0 : n <span class="comment">% Loop over values of k from 1 to n</span>
+    <span class="keyword">if</span> mod(k,2) == 0 <span class="comment">% if k is even, the next line is executed</span>
+        S = S + 1 / factorial(k);
+    <span class="keyword">else</span> <span class="comment">% otherwise, k is odd, the following line is executed:</span>
+        S = S - 1 / factorial(k);
+    <span class="keyword">end</span> <span class="comment">% end of &#8220;if&#8221; statement</span>
+<span class="keyword">end</span> <span class="comment">% end of the for loop</span>
+<span class="comment">% Show only the result, the last partial sum (so we put the display statement after the loop is over)</span>
+disp( [<span class="string">'for k='</span>, num2str(k), <span class="string">': the last partial sum equals '</span>, num2str(S) ]);
+</pre><pre class="codeoutput">for k=100: the last partial sum equals 0.36788
+</pre><p>Note: How do we check that this result is correct? Knowing from Calculus that the series represents the <img src="Lab1Solution_eq15219926251550233685.png" alt="$e^{-x}$">, in this case with x=1, ie <img src="Lab1Solution_eq05404151828305179284.png" alt="$e^{-1}$">.</p><pre class="codeinput">CheckResult=exp(-1);
+disp([<span class="string">'the actual sum up to 5 precision digits is: '</span>,num2str(CheckResult)]);
+</pre><pre class="codeoutput">the actual sum up to 5 precision digits is: 0.36788
+</pre><h2>Exercise 2<a name="5"></a></h2><p>Problem statement: Write a MATLAB program calculating <img src="Lab1Solution_eq10714352316014586838.png" alt="$\sum_{k=0}^{\infty}\frac{(-1)^k}{k!}$"> with an error tolerance of 10^(-6).</p><p><b>Solution:</b></p><pre class="codeinput">tolerance = 1e-6; <span class="comment">% Set the error tolerance to 10^(-4)</span>
+S = 0; <span class="comment">% The sum variable S starts out at 0</span>
+term = 1; <span class="comment">% Set to high enough value</span>
+k = 0; <span class="comment">% first term corresponds to k=0</span>
+sgn = 1;
+<span class="keyword">while</span> abs(term) &gt; tolerance <span class="comment">% repeat until the next term is less than the</span>
+                               <span class="comment">% error tolerance</span>
+term = sgn / factorial(k); <span class="comment">% calculate the next (k-th) term</span>
+S = S + term; <span class="comment">% add k-th term to the sum variable S</span>
+k = k + 1; <span class="comment">% increment summation index k (in a &#8220;for&#8221; loop, this is done</span>
+               <span class="comment">% automatically)</span>
+sgn = -sgn; <span class="comment">% this assignment avoids the use of the "if-else" statement</span>
+               <span class="comment">% used in the previous exercise</span>
+<span class="keyword">end</span>
+disp( [<span class="string">'for k='</span>, num2str(k-1), <span class="string">': the last partial sum equals '</span>, num2str(S) ]);
+<span class="comment">% Show the final result</span>
+
+<span class="comment">% show that we reached the desired tolerance</span>
+fprintf([<span class="string">'And we have reched the desired tolerance because the next term '</span><span class="keyword">...</span>
+<span class="string">'would\n have been:%e. \n'</span>],term); <span class="comment">% Note: the three low dots serve to continue</span>
+                              <span class="comment">% any long matlab statement in multiple lines</span>
+</pre><pre class="codeoutput">for k=10: the last partial sum equals 0.36788
+And we have reched the desired tolerance because the next term would
+ have been:2.755732e-07. 
+</pre><h2>Exercise 3<a name="7"></a></h2><p>Problem statement: plot the function <img src="Lab1Solution_eq06659520707166859374.png" alt="$f (x)= \sin x / (x ^ 2 +1)$"> on the interval <img src="Lab1Solution_eq09113960526667426105.png" alt="$[- \pi; \pi]$"></p><p><b>Solution:</b></p><pre class="codeinput">X = -pi:0.01:pi; <span class="comment">% Create a set of x values between -1 and 1, with a step of 0.01</span>
+Y=sin(X)./(X.^2 + 1); <span class="comment">% The period in &#8220;.^&#8221; ensures that the operation is performed</span>
+                           <span class="comment">%on each element</span>
+figure(1) <span class="comment">%opens a new figure</span>
+plot(X,Y,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1); <span class="comment">% Plot y against x, note the plot option for line color</span>
+                                 <span class="comment">% and width</span>
+box <span class="string">on</span> <span class="comment">% to put a nice frame around your plot</span>
+axis([-pi pi -.5 .5]); <span class="comment">% min and max delimiters for axes values to display</span>
+xlabel(<span class="string">'$x$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,14); <span class="comment">% label the plot and use</span>
+                                              <span class="comment">% math fonts in latex</span>
+                                <span class="comment">%(for nice visualization of math symbols!)</span>
+ylabel(<span class="string">'$y=\frac{\sin x}{x^2 +1}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,14);
+legend({<span class="string">'$f(x)=\frac{\sin x}{x^2 +1}$'</span>},<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,12,<span class="keyword">...</span>
+    <span class="string">'location'</span>,<span class="string">'best'</span>);
+title(<span class="string">'Plot of function $f(x) = \frac{\sin x}{x^2 +1}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="keyword">...</span>
+    <span class="string">'fontsize'</span>,14);
+</pre><img vspace="5" hspace="5" src="Lab1Solution_01.png" alt=""> <h2>Exercise 4<a name="9"></a></h2><p>Problem Statement: Calculate <img src="Lab1Solution_eq04522894975229775049.png" alt="$f(x)=\sum_{k=0}^{\infty} (-1)^k \frac{x^k}{k!}$"> up to a tolerance of 10^(-6) and plot the values of the function for a set of 80  values of x on the interval [-1; 1]</p><p><b>Solution:</b></p><pre class="codeinput">N = 80; <span class="comment">% Number of points in the plot</span>
+X = linspace(-1, 1, N); <span class="comment">% Create a set of N values between -1 and 1</span>
+Y = zeros(N, 1); <span class="comment">% create the corresponding Y array where we store the summation</span>
+                       <span class="comment">% for each value of little x</span>
+tolerance= 1e-6;
+
+<span class="keyword">for</span> i = 1 : N <span class="comment">% Main part of the program: calculate the sum for each of the</span>
+                   <span class="comment">% N x-values</span>
+x = X(i); <span class="comment">% Assign the next x-value to the variable x</span>
+S = 0; <span class="comment">% initialize</span>
+k = 0; <span class="comment">% first term corresponds to k=0</span>
+sgn = 1; <span class="comment">% initialize as positive for the first term in the series</span>
+term=1; <span class="comment">% initialize to a big enough value</span>
+
+    <span class="keyword">while</span> abs(term) &gt; tolerance <span class="comment">% repeat until the next term is less than the</span>
+                                   <span class="comment">% error tolerance</span>
+    <span class="comment">% put here all commands needed to calculate the sum &#8220;S&#8221; for each value of x</span>
+    term = (sgn.*(x.^(k))) ./ factorial(k); <span class="comment">% calculate the next (k-th) term</span>
+        <span class="comment">% note: here little x is a scalar, so we don't actually need the .</span>
+        <span class="comment">% operator, but it is a good practice</span>
+    S = S + term; <span class="comment">% add k-th term to the sum variable S</span>
+    k = k + 1;
+    sgn = -sgn; <span class="comment">% this assignment avoids the use of the "if-else" statement</span>
+                   <span class="comment">% used in the previous exercise</span>
+    <span class="keyword">end</span>
+Y(i) = S; <span class="comment">%; store the result in the appropriate element of the y-array</span>
+
+<span class="keyword">end</span>
+figure(2) <span class="comment">%opens a new figure</span>
+plot(X,Y,<span class="string">'r'</span>,<span class="string">'Linewidth'</span>,1)
+box <span class="string">on</span> <span class="comment">% to put a nice frame around your plot</span>
+xlabel(<span class="string">'$x$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,14); <span class="comment">% label the plot and use</span>
+                                              <span class="comment">% math fonts in latex</span>
+ylabel(<span class="string">'$y=\sum_{k=0}^{\infty}(-1)^k \frac{x^k}{k!}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="keyword">...</span>
+    <span class="string">'fontsize'</span>,14);
+legend({<span class="string">'$f(x)=\sum_{k=0}^{\infty}(-1)^k \frac{x^k}{k!}$'</span>},<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="keyword">...</span>
+    <span class="string">'fontsize'</span>,12,<span class="string">'location'</span>,<span class="string">'best'</span>);
+title(<span class="string">'Plot of function $f(x) =\sum_{k=0}^{\infty}(-1)^k \frac{x^k}{k!}$'</span>,<span class="keyword">...</span>
+    <span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,14);
+</pre><img vspace="5" hspace="5" src="Lab1Solution_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 1 Assignment - Solution 
+% Lab Instructor: Valeria Barra
+%%
+% DUE Tuesday 01/26/16
+
+%% Exercise 1
+% Problem statement: Write a MATLAB program calculating
+% 
+% $$S=\sum_{k=0}^{100}\frac{(-1)^k}{k!} .$$
+
+%%
+% *Solution:* 
+n=100; % How far we’re summing up to
+S=0; % The sum variable S starts out at 0
+for k = 0 : n % Loop over values of k from 1 to n
+    if mod(k,2) == 0 % if k is even, the next line is executed
+        S = S + 1 / factorial(k);
+    else % otherwise, k is odd, the following line is executed:
+        S = S - 1 / factorial(k);
+    end % end of “if” statement
+end % end of the for loop
+% Show only the result, the last partial sum (so we put the display statement after the loop is over)
+disp( ['for k=', num2str(k), ': the last partial sum equals ', num2str(S) ]); 
+
+
+%%
+% Note: How do we check that this result is correct? Knowing from Calculus
+% that the series represents the $e^{-x}$, in this case with x=1, ie
+% $e^{-1}$.
+CheckResult=exp(-1);
+disp(['the actual sum up to 5 precision digits is: ',num2str(CheckResult)]);
+
+%% Exercise 2
+% Problem statement: Write a MATLAB program calculating $\sum_{k=0}^{\infty}\frac{(-1)^k}{k!}$ with an error
+% tolerance of 10^(-6).
+%%
+% *Solution:*
+tolerance = 1e-6; % Set the error tolerance to 10^(-4)
+S = 0; % The sum variable S starts out at 0
+term = 1; % Set to high enough value
+k = 0; % first term corresponds to k=0
+sgn = 1; 
+while abs(term) > tolerance % repeat until the next term is less than the 
+                               % error tolerance
+term = sgn / factorial(k); % calculate the next (k-th) term
+S = S + term; % add k-th term to the sum variable S
+k = k + 1; % increment summation index k (in a “for” loop, this is done 
+               % automatically)
+sgn = -sgn; % this assignment avoids the use of the "if-else" statement 
+               % used in the previous exercise
+end
+disp( ['for k=', num2str(k-1), ': the last partial sum equals ', num2str(S) ]);
+% Show the final result
+
+% show that we reached the desired tolerance
+fprintf(['And we have reched the desired tolerance because the next term '...
+'would\n have been:%e. \n'],term); % Note: the three low dots serve to continue 
+                              % any long matlab statement in multiple lines
+
+%% Exercise 3
+% Problem statement: plot the function $f (x)= \sin x / (x ^ 2 +1)$ on the
+% interval $[- \pi; \pi]$
+%%
+% *Solution:* 
+X = -pi:0.01:pi; % Create a set of x values between -1 and 1, with a step of 0.01
+Y=sin(X)./(X.^2 + 1); % The period in “.^” ensures that the operation is performed 
+                           %on each element
+figure(1) %opens a new figure
+plot(X,Y,'r','LineWidth',1); % Plot y against x, note the plot option for line color
+                                 % and width
+box on % to put a nice frame around your plot
+axis([-pi pi -.5 .5]); % min and max delimiters for axes values to display
+xlabel('$x$','interpreter','latex','fontsize',14); % label the plot and use 
+                                              % math fonts in latex 
+                                %(for nice visualization of math symbols!)
+ylabel('$y=\frac{\sin x}{x^2 +1}$','interpreter','latex','fontsize',14);
+legend({'$f(x)=\frac{\sin x}{x^2 +1}$'},'interpreter','latex','fontsize',12,...
+    'location','best');
+title('Plot of function $f(x) = \frac{\sin x}{x^2 +1}$','interpreter','latex',...
+    'fontsize',14);
+
+%% Exercise 4
+% Problem Statement: Calculate $f(x)=\sum_{k=0}^{\infty} (-1)^k \frac{x^k}{k!}$ up to a tolerance of 10^(-6) and plot the values of the function for a set of 80 
+%  values of x on the interval [-1; 1]
+%%
+% *Solution:* 
+N = 80; % Number of points in the plot
+X = linspace(-1, 1, N); % Create a set of N values between -1 and 1
+Y = zeros(N, 1); % create the corresponding Y array where we store the summation 
+                       % for each value of little x
+tolerance= 1e-6;
+
+for i = 1 : N % Main part of the program: calculate the sum for each of the 
+                   % N x-values
+x = X(i); % Assign the next x-value to the variable x
+S = 0; % initialize
+k = 0; % first term corresponds to k=0
+sgn = 1; % initialize as positive for the first term in the series
+term=1; % initialize to a big enough value
+
+    while abs(term) > tolerance % repeat until the next term is less than the 
+                                   % error tolerance
+    % put here all commands needed to calculate the sum “S” for each value of x
+    term = (sgn.*(x.^(k))) ./ factorial(k); % calculate the next (k-th) term
+        % note: here little x is a scalar, so we don't actually need the .
+        % operator, but it is a good practice
+    S = S + term; % add k-th term to the sum variable S
+    k = k + 1;
+    sgn = -sgn; % this assignment avoids the use of the "if-else" statement 
+                   % used in the previous exercise
+    end
+Y(i) = S; %; store the result in the appropriate element of the y-array
+
+end
+figure(2) %opens a new figure
+plot(X,Y,'r','Linewidth',1)
+box on % to put a nice frame around your plot
+xlabel('$x$','interpreter','latex','fontsize',14); % label the plot and use 
+                                              % math fonts in latex
+ylabel('$y=\sum_{k=0}^{\infty}(-1)^k \frac{x^k}{k!}$','interpreter','latex',...
+    'fontsize',14);
+legend({'$f(x)=\sum_{k=0}^{\infty}(-1)^k \frac{x^k}{k!}$'},'interpreter','latex',...
+    'fontsize',12,'location','best');
+title('Plot of function $f(x) =\sum_{k=0}^{\infty}(-1)^k \frac{x^k}{k!}$',...
+    'interpreter','latex','fontsize',14);
+##### SOURCE END #####
+--></body></html>

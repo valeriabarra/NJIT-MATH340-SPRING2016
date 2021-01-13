@@ -1,0 +1,385 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 7 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-10"><meta name="DC.source" content="Lab7Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 7 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra DUE Tuesday 03-08-2016</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First Problem: Interoplation with Clamped Splines</a></li><li><a href="#2">Problem 1)</a></li></ul><h2>Called Functions</h2><ul><li><a href="#ChebyNodes">ChebyNodes </a></li><li><a href="#LagrangeInterpolation">LagrangeInterpolation </a></li></ul></div><h2>First Problem: Interoplation with Clamped Splines<a name="1"></a></h2><h2>Problem 1)<a name="2"></a></h2><p>Consider the interpolating clamped spline polynomial for <img src="Lab7Solution_eq01316338115970988643.png" alt="$f(x)= \frac{1}{ (1+25 x^2)}$">  with 11-equispaced points on [-1,1].</p><pre class="codeinput">clear <span class="string">all</span>;
+close <span class="string">all</span>;
+disp(<span class="string">'Execution of Probl. 1)'</span>)
+<span class="comment">% the set of data points given in the problem is not equi-spaced, but we</span>
+<span class="comment">% first define the interval and the nodes</span>
+n = 11; <span class="comment">% the number of data points</span>
+a = -1; b = 1;
+xi = linspace(a,b,n);
+<span class="comment">% define the function symbolically</span>
+syms <span class="string">x</span>;
+f = 1./(1 + 25.*(x.^2));
+Df = diff(f);
+<span class="comment">% find the derivative at the endpoints</span>
+vl = double(subs(Df,{x},a));
+vr = double(subs(Df,{x},b));
+<span class="comment">% now find the y-values</span>
+yi = double(subs(f,{x},xi));
+<span class="comment">% now use the command spline to find the coeddicients of interpolation</span>
+cs = spline(xi, [vl yi vr]);
+<span class="comment">% define a domain</span>
+domain = linspace(a,b,101);
+<span class="comment">% now find the f-values of the interpolating polynomial</span>
+pS = ppval(cs,domain);
+
+
+<span class="comment">% now repeat the exercise with Chebychev nodes</span>
+xiC = ChebyNodes(n,a,b); <span class="comment">% call to the function that calculates the Chebyshev nodes</span>
+yiC = double(subs(f,{x},xiC));
+<span class="comment">% call to the function with Chebyshev nodes</span>
+pC= LagrangeInterpolation(xiC,yiC,domain);
+<span class="comment">% now to compare the performance with the equi-spaced points Lagrangian</span>
+<span class="comment">% interpolation</span>
+
+<span class="comment">% call to the function with equi-spaced nodes</span>
+pL= LagrangeInterpolation(xi,yi,domain);
+
+figure; <span class="comment">% starts a new figure</span>
+plot(xi,yi,<span class="string">'or'</span>,<span class="string">'MarkerSize'</span>,8);
+hold <span class="string">on</span>
+plot(domain,pS,<span class="string">'-r'</span>,<span class="string">'Linewidth'</span>,2)
+hold <span class="string">on</span>
+plot(domain,pC,<span class="string">'--b'</span>,<span class="string">'Linewidth'</span>,2)
+hold <span class="string">on</span>
+plot(domain,pL,<span class="string">':g'</span>,<span class="string">'Linewidth'</span>,2)
+hold <span class="string">on</span>
+F = double(subs(f,{x},domain));
+plot(domain,F,<span class="string">'.-k'</span>,<span class="string">'Linewidth'</span>,1.5)
+title(<span class="string">'Interpolation with Clamped Splines'</span>)
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'y'</span>)
+legend({<span class="string">'nodes $(x_i,y_i)$'</span>,<span class="string">'$P_S(x)$'</span>,<span class="string">'$P_C(x)$'</span>,<span class="string">'$P_L(x)$'</span>,<span class="string">'actual solution $f(x)$'</span>},<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+
+Err_S = max(abs(pS -F)); <span class="comment">% the error with P_S</span>
+Err_C = max(abs(pC -F)); <span class="comment">% the error with P_C</span>
+Err_L = max(abs(pL -F)); <span class="comment">% the error with P_L</span>
+disp([<span class="string">'The max error with the cubic spline is '</span>,num2str(Err_S)])
+disp([<span class="string">'The max error with the Chebyshev nodes polynomial is '</span>,num2str(Err_C)])
+disp([<span class="string">'The max error with the Lagrange polynomial is '</span>,num2str(Err_L)])
+</pre><pre class="codeoutput">Execution of Probl. 1)
+The max error with the cubic spline is 0.021955
+The max error with the Chebyshev nodes polynomial is 0.10893
+The max error with the Lagrange polynomial is 1.9156
+</pre><img vspace="5" hspace="5" src="Lab7Solution_01.png" alt=""> <p><b>Conclusions:</b> Comparing to the executions, we see that interpolation using the cubic spline is better than the one using Chebyshev nodes and Lagrange, respectively. Lagrange's polynomial highly oscillates towards the boundary of the domain, due to the fact that the nodes are not wisely distributed and it is a 10^th degree polynomial. Chebyshev does a better job fixing these oscillations, but still it is a 10^th degree polynomial. This behavior is totatlly controlled by the spline polynomial instead, since the max degree in each subinterval is 3.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 7 Solution
+% Lab Instructor: Valeria Barra
+% DUE Tuesday 03-08-2016
+
+%% First Problem: Interoplation with Clamped Splines
+
+%% Problem 1) 
+% Consider the interpolating clamped spline polynomial for $f(x)= \frac{1}{
+% (1+25 x^2)}$  with 11-equispaced points on [-1,1].
+
+clear all;
+close all;
+disp('Execution of Probl. 1)')
+% the set of data points given in the problem is not equi-spaced, but we
+% first define the interval and the nodes
+n = 11; % the number of data points
+a = -1; b = 1;
+xi = linspace(a,b,n);
+% define the function symbolically
+syms x;
+f = 1./(1 + 25.*(x.^2));
+Df = diff(f);
+% find the derivative at the endpoints
+vl = double(subs(Df,{x},a));
+vr = double(subs(Df,{x},b));
+% now find the y-values
+yi = double(subs(f,{x},xi));
+% now use the command spline to find the coeddicients of interpolation
+cs = spline(xi, [vl yi vr]);
+% define a domain
+domain = linspace(a,b,101);
+% now find the f-values of the interpolating polynomial
+pS = ppval(cs,domain);
+
+
+% now repeat the exercise with Chebychev nodes
+xiC = ChebyNodes(n,a,b); % call to the function that calculates the Chebyshev nodes
+yiC = double(subs(f,{x},xiC));
+% call to the function with Chebyshev nodes
+pC= LagrangeInterpolation(xiC,yiC,domain);
+% now to compare the performance with the equi-spaced points Lagrangian
+% interpolation
+
+% call to the function with equi-spaced nodes
+pL= LagrangeInterpolation(xi,yi,domain);
+
+figure; % starts a new figure
+plot(xi,yi,'or','MarkerSize',8);
+hold on
+plot(domain,pS,'-r','Linewidth',2)
+hold on
+plot(domain,pC,'REPLACE_WITH_DASH_DASHb','Linewidth',2)
+hold on
+plot(domain,pL,':g','Linewidth',2)
+hold on 
+F = double(subs(f,{x},domain));
+plot(domain,F,'.-k','Linewidth',1.5)
+title('Interpolation with Clamped Splines')
+xlabel('x')
+ylabel('y')
+legend({'nodes $(x_i,y_i)$','$P_S(x)$','$P_C(x)$','$P_L(x)$','actual solution $f(x)$'},'interpreter','latex')
+
+Err_S = max(abs(pS -F)); % the error with P_S
+Err_C = max(abs(pC -F)); % the error with P_C
+Err_L = max(abs(pL -F)); % the error with P_L
+disp(['The max error with the cubic spline is ',num2str(Err_S)])
+disp(['The max error with the Chebyshev nodes polynomial is ',num2str(Err_C)])
+disp(['The max error with the Lagrange polynomial is ',num2str(Err_L)])
+
+%% 
+% *Conclusions:*
+% Comparing to the executions, we see that interpolation using the cubic spline is better than the one using Chebyshev nodes
+% and Lagrange, respectively. Lagrange's polynomial highly oscillates towards the boundary of the domain, due to the fact that the nodes are not wisely distributed and it is a 10^th degree polynomial. Chebyshev does a better job fixing these oscillations, but still it is a 10^th degree polynomial. This behavior is totatlly controlled by the spline polynomial instead, since the max degree in each subinterval is 3. 
+##### SOURCE END #####
+--></body></html>
+<a name="ChebyNodes"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ChebyNodes</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-10"><meta name="DC.source" content="ChebyNodes.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> xi = ChebyNodes( n,a,b )
+<span class="comment">% Input arguments:</span>
+<span class="comment">% - n, the number of Chebyshev nodes we want to find (to calculate an (n-1)-degree interpolating polynomial)</span>
+<span class="comment">% - a, b, the endpoints of the interval [a,b]</span>
+<span class="comment">% Ouput argument:</span>
+<span class="comment">% - xi, the Chebyshev nodes found</span>
+
+<span class="comment">% to find the Chebyshev nodes</span>
+<span class="keyword">for</span> i = 1: n
+    xi(i)=((a+b)/2) + ((b-a)/2)*cos( ((2*i -1)*pi)/(2*n) );
+<span class="keyword">end</span>
+<span class="comment">% flip the array xi, since with this construction they are in decresent</span>
+<span class="comment">% order</span>
+xi = fliplr(xi);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="LagrangeInterpolation"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>LagrangeInterpolation</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-10"><meta name="DC.source" content="LagrangeInterpolation.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [p] = LagrangeInterpolation(xi,yi,x)
+<span class="comment">% data given:</span>
+<span class="comment">% - x is the vector for the domain on which we will plot the polynomial</span>
+<span class="comment">% - xi set of first coordinates of data points</span>
+<span class="comment">% - yi set of second coordinates of data points</span>
+
+p = zeros(1,length(x)); <span class="comment">%initialize the vector for the polynomial</span>
+<span class="keyword">for</span> i = 1:length(xi)
+    Li = 1; <span class="comment">% initialize the L variable for the Lagrange interpolant</span>
+    <span class="keyword">for</span> j = 1:length(xi)
+        <span class="keyword">if</span> i ~= j
+            Li = Li.*((x-xi(j))./(xi(i)-xi(j)));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    p = p + Li.*yi(i);
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>

@@ -1,0 +1,588 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 4 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="Lab4Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 4 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra DUE Tuesday 02-16-2016</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">First Problem: Probl. 28 in the Homework</a></li><li><a href="#3">Second Problem: Probl. 29 in the Homework</a></li></ul><h2>Called Functions</h2><ul><li><a href="#MyBisection">MyBisection </a></li><li><a href="#MyNewton">MyNewton </a></li><li><a href="#MyRegulaFalsi">MyRegulaFalsi </a></li><li><a href="#MySecantMethod">MySecantMethod </a></li></ul></div><h2>First Problem: Probl. 28 in the Homework<a name="1"></a></h2><pre class="codeinput"><span class="comment">% the interval found</span>
+x0 = 2;
+x1 = 3;
+tol= 10^(-3);
+N = 50;
+f1 = @(x)(x.^3 -9);
+disp([<span class="string">'Execution of problem 1 by Secant Method:'</span>])
+[ roots,error ] = MySecantMethod(f1,x0,x1,tol,N);
+disp([<span class="string">'Execution of problem 1 by Regula Falsi:'</span>])
+[x,err]=MyRegulaFalsi(f1,x0,x1,tol);
+disp([<span class="string">'Execution of problem 1 by Bisection:'</span>])
+c=MyBisection(f1,x0,x1,tol);
+disp([<span class="string">'Execution of problem 1 by Newton:'</span>])
+syms <span class="string">x</span>;
+[X,err]=MyNewton(x,sym(f1),x0,tol,N);
+</pre><pre class="codeoutput">Execution of problem 1 by Secant Method:
+At the step i = 7 , the root found is 2.0800838
+Execution of problem 1 by Regula Falsi:
+At the step i = 3 , the root found is 2.6727273
+Execution of problem 1 by Bisection:
+At the step i = 10 , the root found is 2.0810547
+The maximum number of steps estimated was 10 
+Execution of problem 1 by Newton:
+We have converged to the root, r = 2.0801 in 3 steps.
+</pre><p><b>Conclusions:</b> When the intial guess is close enough to the actual solution, Newton's method is the fastest. In fact its convergence is quadratic, while secant method has order equal to the golden ratio (approximately 1.62). For this particular problem though, we can see that Regula Falsi performs as Newton's method. Bisection method was the slowest, and Secant the second slowest.</p><h2>Second Problem: Probl. 29 in the Homework<a name="3"></a></h2><pre class="codeinput">f2 = @(x)(6 + (cos(x)).^2 -x);
+x0=6;
+x1=7;
+disp([<span class="string">'Execution of problem 2 by Secant Method:'</span>])
+[ roots,error ] = MySecantMethod(f2,x0,x1,tol,N);
+disp([<span class="string">'Execution of problem 2 by Regula Falsi:'</span>])
+[x,err]=MyRegulaFalsi(f2,x0,x1,tol);
+disp([<span class="string">'Execution of problem 2 by Bisection:'</span>])
+c=MyBisection(f2,x0,x1,tol);
+disp([<span class="string">'Execution of problem 2 by Newton:'</span>])
+syms <span class="string">x</span>;
+[X,err]=MyNewton(x,sym(f2),x0,tol,N);
+</pre><pre class="codeoutput">Execution of problem 2 by Secant Method:
+At the step i = 7 , the root found is 6.7760923
+Execution of problem 2 by Regula Falsi:
+At the step i = 3 , the root found is 7.4902436
+Execution of problem 2 by Bisection:
+At the step i = 10 , the root found is 6.7763672
+The maximum number of steps estimated was 10 
+Execution of problem 2 by Newton:
+We have NOT converged. We have reached the maximum number of steps allowed.
+</pre><p><b>Conclusions:</b> For this initial guess instead, Newton's method does not converge. Regula Falsi in this case is still the fastest method, and we are guaranteed that we don't migrate away from the root, because of the bracketing imposed by the method.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 4 Solution
+% Lab Instructor: Valeria Barra
+% DUE Tuesday 02-16-2016
+
+%% First Problem: Probl. 28 in the Homework
+
+% the interval found
+x0 = 2;
+x1 = 3;
+tol= 10^(-3);
+N = 50;
+f1 = @(x)(x.^3 -9);
+disp(['Execution of problem 1 by Secant Method:'])
+[ roots,error ] = MySecantMethod(f1,x0,x1,tol,N);
+disp(['Execution of problem 1 by Regula Falsi:'])
+[x,err]=MyRegulaFalsi(f1,x0,x1,tol);
+disp(['Execution of problem 1 by Bisection:'])
+c=MyBisection(f1,x0,x1,tol);
+disp(['Execution of problem 1 by Newton:'])
+syms x;
+[X,err]=MyNewton(x,sym(f1),x0,tol,N);
+
+
+%%
+% *Conclusions:*
+% When the intial guess is close enough to the actual solution, Newton's method is the fastest. In fact its convergence is quadratic, while secant method has order equal to
+% the golden ratio (approximately 1.62). For this particular problem
+% though, we can see that Regula Falsi performs as Newton's method.
+% Bisection method was the slowest, and Secant the second slowest.
+
+
+%% Second Problem: Probl. 29 in the Homework
+
+f2 = @(x)(6 + (cos(x)).^2 -x);
+x0=6;
+x1=7;
+disp(['Execution of problem 2 by Secant Method:'])
+[ roots,error ] = MySecantMethod(f2,x0,x1,tol,N);
+disp(['Execution of problem 2 by Regula Falsi:'])
+[x,err]=MyRegulaFalsi(f2,x0,x1,tol);
+disp(['Execution of problem 2 by Bisection:'])
+c=MyBisection(f2,x0,x1,tol);
+disp(['Execution of problem 2 by Newton:'])
+syms x;
+[X,err]=MyNewton(x,sym(f2),x0,tol,N);
+
+%% 
+% *Conclusions:*
+% For this initial guess instead, Newton's method does not converge. Regula
+% Falsi in this case is still the fastest method, and we are guaranteed
+% that we don't migrate away from the root, because of the bracketing
+% imposed by the method.
+##### SOURCE END #####
+--></body></html>
+<a name="MyBisection"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MyBisection</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="MyBisection.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> c=MyBisection(f,a,b,tol)
+c = 0; <span class="comment">% it initializes the returning value, in case of failure</span>
+ainit = a;
+binit = b;
+<span class="keyword">if</span> sign(f(a))*sign(f(b)) &gt;= 0
+    disp(<span class="string">'f(a)f(b)&lt;0 not satisfied!'</span>)
+    <span class="keyword">return</span> <span class="comment">%ceases execution</span>
+<span class="keyword">end</span>
+fa=f(a);
+fb=f(b);
+i=0; <span class="comment">% counter variable</span>
+<span class="keyword">while</span> (b-a)/2&gt;tol
+     i = i+1;
+    c=(a+b)/2;
+    fc=f(c);
+    <span class="keyword">if</span> fc == 0 <span class="comment">%c is a solution, done</span>
+        disp([<span class="string">'At the step i = '</span>,num2str(i),<span class="string">' the exact root is c = '</span>,num2str(c),<span class="string">' in the interval [a, b] = ['</span>,num2str(a),<span class="string">', '</span>,num2str(b),<span class="string">']'</span>]);
+        fprintf(<span class="string">'The maximum number of steps estimated was %d \n'</span>,ceil( -log2(tol) + log2(binit - ainit)))
+        <span class="keyword">return</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> sign(fc)*sign(fa)&lt;0 <span class="comment">%a and c make the new interval</span>
+        b=c;
+        fb=fc;
+    <span class="keyword">else</span> <span class="comment">%c and b make the new interval</span>
+        a=c;
+        fa=fc;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+c=(a+b)/2;
+fprintf(<span class="string">'At the step i = %d , the root found is %8.7f\n'</span>,i+1,c)
+fprintf(<span class="string">'The maximum number of steps estimated was %d \n'</span>,ceil( -log2(tol) + log2(binit - ainit)))
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="MyNewton"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MyNewton</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="MyNewton.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [X,err]=MyNewton(x,f,x0,tol,N)
+
+<span class="comment">% Input Arguments:</span>
+<span class="comment">% - x, the symbolic variable we are passing the function of</span>
+<span class="comment">% - f, the symbolic function we have in terms of x</span>
+<span class="comment">% - x0, the initial guess, starting point of our iteration</span>
+<span class="comment">% - tol, the desired tolerance up to which we accept our solution</span>
+<span class="comment">% - N, the max number of iterations reached in case of NOT convergence</span>
+
+<span class="comment">% Output Arguments:</span>
+<span class="comment">% - X is the vector of iterates</span>
+<span class="comment">% - err is the vector of all errors at each iteration</span>
+
+
+flag=1; <span class="comment">% case of insuccess</span>
+der_f=diff(f);
+root=0; err=0; <span class="comment">% initialize the output to zero</span>
+X(1)=x0; <span class="comment">% first entry of the array X of iterates is the initial guess</span>
+
+<span class="keyword">for</span> i=1:N
+    <span class="keyword">if</span> subs(der_f,{x},{X(i)})==0
+        disp(<span class="string">'ERROR: The derivative must not be zero!'</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">else</span>
+        X(i+1)= X(i) - subs(f,{x},{X(i)})/subs(der_f,{x},{X(i)});
+        err(i)=abs(X(i+1)-X(i));
+        <span class="keyword">if</span> (err(i)&lt;tol)
+            <span class="comment">%this is the check of convergence of our iterations. In</span>
+            <span class="comment">%positive case, we change the value of our flag variable to 0</span>
+            flag=0;
+            root=X(i+1);
+            disp([<span class="string">'We have converged to the root, r = '</span>,num2str(root),<span class="string">' in '</span>,num2str(i),<span class="string">' steps.'</span>]);
+        <span class="keyword">break</span>;
+        <span class="keyword">elseif</span> (i==N)
+            disp(<span class="string">'We have NOT converged. We have reached the maximum number of steps allowed.'</span>);
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="MyRegulaFalsi"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MyRegulaFalsi</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="MyRegulaFalsi.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [x,err]=MyRegulaFalsi(f,x0,x1,tol)
+
+<span class="comment">% assign the given initial guesses to the first two entries of the array x</span>
+<span class="comment">% of iterates</span>
+x(1)=x0;
+x(2)=x1;
+n=2;
+x(n+1)=x(n)-f(x(n))*(x(n)-x(n-1))/(f(x(n)-f(x(n-1)))); <span class="comment">% we need the calculation for the next point the first time</span>
+
+err(1)=tol +1; <span class="comment">% something for sure greater than the tolerance to enter the while loop the first time</span>
+<span class="keyword">while</span> err(n-1)&gt;tol
+    <span class="keyword">if</span> f(x(n-1))*f(x(n+1)) &lt;= 0 <span class="comment">% this part is like bisection method with a = n-1, b = n, and c = n+1</span>
+        x(n)=x(n+1);
+    <span class="keyword">else</span>
+        x(n-1) = x(n+1);
+    <span class="keyword">end</span>
+    <span class="comment">% calculate the new point</span>
+    n=n+1; <span class="comment">% increment the index first</span>
+    x(n+1)=x(n)-f(x(n))*(x(n)-x(n-1))/(f(x(n)-f(x(n-1))));
+    <span class="comment">% calculate the corresponding new error</span>
+    err(n-1)=(abs(x(n+1)-x(n)));
+<span class="keyword">end</span>
+
+fprintf(<span class="string">'At the step i = %d , the root found is %8.7f\n'</span>,n,x(n+1))
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="MySecantMethod"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MySecantMethod</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="MySecantMethod.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ roots,error ] = MySecantMethod(f,x0,x1,tol,max_iter)
+<span class="comment">% Input Arguments:</span>
+<span class="comment">% - f, the function handle</span>
+<span class="comment">% - x0 and x1, the two initial guesses, starting points of our iteration</span>
+<span class="comment">% - tol, the desired tolerance up to which we accept our solution</span>
+<span class="comment">% - max_iter, the max number of iterations reached in case of NOT convergence</span>
+
+<span class="comment">% Output Arguments:</span>
+<span class="comment">% - roots is the vector of iterates</span>
+<span class="comment">% - error is the vector of all errors at each iteration</span>
+
+<span class="comment">% put the first two initial guesses given inside of the vector roots of</span>
+<span class="comment">% iterates</span>
+roots(1)=x0;
+roots(2)=x1;
+<span class="keyword">for</span> i=3:max_iter <span class="comment">% why do we start this loop at 3? because the first two entries</span>
+                      <span class="comment">% of the vector of iterates roots have already been assigned</span>
+    <span class="keyword">if</span> (f(roots(i-1))-f(roots(i-2)))==0
+        disp(<span class="string">'Error: we are dividing by zero!'</span>);
+       <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+    roots(i)=roots(i-1) - f(roots(i-1))*(roots(i-1)-roots(i-2))/(f(roots(i-1))-f(roots(i-2)));
+    error(i-2)=abs(roots(i-1)-roots(i-2)); <span class="comment">% assign the error as the difference of the</span>
+                                          <span class="comment">% two last iterates found</span>
+    <span class="keyword">if</span> (error(i-2)&lt;=tol) <span class="comment">% the error assignment is shifted by 2 because the for loop</span>
+                           <span class="comment">% started from i=3</span>
+       fprintf(<span class="string">'At the step i = %d , the root found is %8.7f\n'</span>,i,roots(i))
+       <span class="keyword">return</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">if</span> (i == max_iter)
+    disp(<span class="string">'We have diverged!'</span>)
+<span class="keyword">end</span>
+fprintf(<span class="string">'At the step i = %d , the root found is %8.7f\n'</span>,i,roots(i))
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>

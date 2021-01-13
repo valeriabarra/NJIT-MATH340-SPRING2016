@@ -1,0 +1,543 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>line_fewer_markers</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-04-29"><meta name="DC.source" content="line_fewer_markers.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">find marker spec in varargin and remove it; extract special params: LockOnMax,Spacing</a></li><li><a href="#3">input size check</a></li><li><a href="#4">a) once only the line with all points with the style</a></li><li><a href="#5">b) last time the markers, using fewer points with style</a></li><li><a href="#6">c) once with a visible handle, only the first point, using the complete style you specified</a></li></ul></div><pre class="codeinput"><span class="comment">% line_fewer_markers - line with controlled amount of markers and correct legend behaviour</span>
+<span class="comment">%</span>
+<span class="comment">%   LINE_FEWER_MARKERS(X,Y,NUM_MARKERS) adds the line in vectors X and Y to the current axes</span>
+<span class="comment">%   with exactly NUM_MARKERS markers drawn.</span>
+<span class="comment">%</span>
+<span class="comment">%   LINE_FEWER_MARKERS(X,Y,NUM_MARKERS,'PropertyName',PropertyValue,...) plots the data</span>
+<span class="comment">%   stored in the vectors X and Y.</span>
+<span class="comment">%</span>
+<span class="comment">%   LINE_FEWER_MARKERS returns handles to LINE/MARKER objects.</span>
+<span class="comment">%</span>
+<span class="comment">%   [H1,H2,H3] = LINE_FEWER_MARKERS(X,Y,NUM_MARKERS,'PropertyName',PropertyValue,...)</span>
+<span class="comment">%   performs the actions as above and returns the handles of all the plotted lines/markers.</span>
+<span class="comment">%   H1    = handle to the main marker(1 point); it may be put in array and used with legend</span>
+<span class="comment">%   H2    = handle to the continuous line (as in H2=plot())</span>
+<span class="comment">%   H3    = handle to all other markers</span>
+<span class="comment">%</span>
+<span class="comment">%   Property/Value pairs and descriptions:</span>
+<span class="comment">%</span>
+<span class="comment">%       Spacing    - 'x'      : ordinary uniform along x</span>
+<span class="comment">%                  - 'curve'  : equal lengths along curve y(x)</span>
+<span class="comment">%</span>
+<span class="comment">%       LockOnMax  - 0        : first marker on 1st data point</span>
+<span class="comment">%                  - 1        : offset all markers such that one marker on first max of y(x)</span>
+<span class="comment">%</span>
+<span class="comment">%       LegendLine - 'on'     : default, reproduce linestyle also in legend</span>
+<span class="comment">%                  - 'off'    : shows only marker in legend</span>
+<span class="comment">%</span>
+<span class="comment">%       LineSpec: same as for LINE: LineStyle,LineWidth,Marker,MarkerSize,MarkerFaceColor...</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%   Example: plot 3 curves with 9,9, and 15 markers each, using different input styles</span>
+<span class="comment">%</span>
+<span class="comment">%      figure; hold on;</span>
+<span class="comment">%      t  = 0:0.005:pi;</span>
+<span class="comment">%      line_fewer_markers(t*180/pi,cos(t) ,9,  '--bs','spacing','curve');</span>
+<span class="comment">%      line_fewer_markers(t*180/pi,sin(t) ,9,  '-.ro','MarkerFaceColor','g', ...</span>
+<span class="comment">%                                                     'markersize',6,'linewidth',2);</span>
+<span class="comment">%      grey1 = [1 1 1]*0.5;</span>
+<span class="comment">%      line_fewer_markers(t*180/pi,sin(t).*cos(t) ,15, ':','marker','h','color',grey1, ...</span>
+<span class="comment">%                                    'markerfacecolor',grey1,'linewidth',2,'LockOnMax',1);</span>
+<span class="comment">%      leg = legend('cos','sin','sin*cos','location','best');</span>
+<span class="comment">%</span>
+<span class="comment">% Inspired by Ioannis Filippidis's answer:</span>
+<span class="comment">% http://www.mathworks.com/matlabcentral/answers/2165-too-many-markers</span>
+<span class="comment">%</span>
+<span class="comment">% rev.3, Massimo Ciacci, August 19, 2013</span>
+<span class="comment">%</span>
+<span class="keyword">function</span> [H1,H2,H3] = line_fewer_markers(x,y,num_Markers, varargin)
+</pre><h2>find marker spec in varargin and remove it; extract special params: LockOnMax,Spacing<a name="2"></a></h2><pre class="codeinput"><span class="keyword">if</span> mod(length(varargin),2)
+    <span class="keyword">if</span> ischar(varargin{1})
+      linspec   = varargin{1};
+      extraArgs = varargin(2:end);
+      [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargsLineSpec(linspec,extraArgs);
+    <span class="keyword">else</span>
+      error(<span class="string">'odd sized [param | val] list, missing one param ?'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+      [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargs(varargin{:});
+<span class="keyword">end</span>
+</pre><h2>input size check<a name="3"></a></h2><pre class="codeinput"><span class="keyword">if</span>  isvector(x) &amp;&amp;  isvector(y)
+    <span class="comment">% make x,y row vectors</span>
+    <span class="keyword">if</span> iscolumn(x), x = x.'; <span class="keyword">end</span>
+    <span class="keyword">if</span> iscolumn(y), y = y.'; <span class="keyword">end</span>
+<span class="keyword">else</span>
+    error(<span class="string">'line_fewer_markers: input arguments must be 1D vectors'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% How the method works: plots 3 times:</span>
+<span class="comment">% a) once only the line with all points with the style                                                'r--' and invisible handle,</span>
+<span class="comment">% b) last time the markers, using fewer points with style                                             'ro' and again invisible handle.</span>
+<span class="comment">% c) once with a visible handle, only the first point, using the complete style you specified         (e.g. 'r--o')</span>
+</pre><h2>a) once only the line with all points with the style<a name="4"></a></h2><pre class="codeinput">H2 = line(x   ,y   ,varargInNoMk{:});                               <span class="comment">%no markers here</span>
+hasbehavior(H2,<span class="string">'legend'</span>,0);                                         <span class="comment">%prevent to appear in legends!</span>
+</pre><h2>b) last time the markers, using fewer points with style<a name="5"></a></h2><pre class="codeinput"><span class="keyword">if</span>     (strcmp(Spacing,<span class="string">'x'</span>) || strcmp(Spacing,<span class="string">'X'</span>))
+    ti = round(linspace(1,length(x),num_Markers));
+<span class="keyword">elseif</span> (strcmp(Spacing,<span class="string">'curve'</span>) || strcmp(Spacing,<span class="string">'Curve'</span>))
+    scaleY     = 3/4; <span class="comment">% 1/1 figure aspect ratio</span>
+    yNrm       = (y-min(y))./(max(y)-min(y))*scaleY;                <span class="comment">%NORMALIZE y scale in [0 1], height of display is prop to max(abs(y))</span>
+    xNrm       = (x-min(x))./(max(x)-min(x));                       <span class="comment">%NORMALIZE x scale in [0 1]</span>
+
+    <span class="keyword">if</span> (sum(isinf(yNrm))&gt;0) || sum(isinf(x))&gt;0                      <span class="comment">%spacing along curve not possible with infinites</span>
+        ti = round(linspace(1,length(x),num_Markers));
+    <span class="keyword">else</span>
+        t        = 1:length(x);
+        s        = [0 cumsum(sqrt(diff(xNrm).^2+diff(yNrm).^2))];   <span class="comment">%measures length along the curve</span>
+        si       = (0:num_Markers-1)*s(end)/(num_Markers-1);        <span class="comment">%equally spaced lengths along the curve</span>
+        si(end)  = s(end);                                          <span class="comment">%fix last point to be within the curve</span>
+        ti       = round(interp1(s,t,si));                          <span class="comment">%find x index of markers</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    error(<span class="string">'invalid spacing parameter'</span>);
+<span class="keyword">end</span>
+<span class="keyword">if</span> LockOnMax
+    <span class="comment">%set one ti on max if found</span>
+    [Mv,idx]   = max(y); idx=idx(1);
+    [mv,idxti] = min(abs(idx-ti));
+    deltati    = ti(idxti)-idx;
+    ti         = max(1,min(ti-deltati,length(y)));
+<span class="keyword">end</span>
+xi = x(ti);
+yi = y(ti);
+H3 = line(xi,yi,varargInNoMkNoLn{:},<span class="string">'Marker'</span>,lm,<span class="string">'MarkerSize'</span>,ms,<span class="string">'MarkerFaceColor'</span>,mfc,<span class="string">'LineStyle'</span>,<span class="string">'none'</span>);  <span class="comment">%plot markers only</span>
+hasbehavior(H3,<span class="string">'legend'</span>,0); <span class="comment">%prevent to appear in legends!</span>
+</pre><h2>c) once with a visible handle, only the first point, using the complete style you specified<a name="6"></a></h2><pre class="codeinput"><span class="keyword">if</span> strcmp(LegendLine,<span class="string">'on'</span>)
+    H1 = line(xi(1),yi(1),varargInNoMk{:},<span class="string">'Marker'</span>,lm,<span class="string">'MarkerSize'</span>,ms,<span class="string">'MarkerFaceColor'</span>,mfc);
+<span class="keyword">else</span>
+    H1 = line(xi(1),yi(1),varargInNoMk{:},<span class="string">'linestyle'</span>,<span class="string">'none'</span>,<span class="string">'Marker'</span>,lm,<span class="string">'MarkerSize'</span>,ms,<span class="string">'MarkerFaceColor'</span>,mfc);
+<span class="keyword">end</span>
+
+
+<span class="comment">%-------------------------------------------------------------</span>
+<span class="comment">% PARSE FUNCTIONS</span>
+<span class="comment">%-------------------------------------------------------------</span>
+<span class="comment">% varargInNoMk = list of property pairs, marker specs removed</span>
+<span class="comment">% varargInNoMkNoLn = list of property pairs, marker specs and line specs removed</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargs(varargin)
+lm =[]; ms =[]; mfc=[]; LockOnMax=[]; Spacing=[]; LegendLine=[];
+varargInNoMk = {};
+varargInNoMkNoLn = {};
+arg_index = 1;
+<span class="keyword">while</span> arg_index &lt;= length(varargin)
+	arg = varargin{arg_index};
+    <span class="comment">% extract special params and marker specs from arg list</span>
+    <span class="keyword">if</span> strcmp(arg,<span class="string">'marker'</span>) || strcmp(arg,<span class="string">'Marker'</span>) || strcmp(arg,<span class="string">'Mk'</span>)  || strcmp(arg,<span class="string">'mk'</span>)
+        lm              = varargin{arg_index+1};
+    <span class="keyword">elseif</span> strcmp(arg,<span class="string">'MarkerSize'</span>) || strcmp(arg,<span class="string">'markersize'</span>) || strcmp(arg,<span class="string">'Mks'</span>)  || strcmp(arg,<span class="string">'mks'</span>)
+        ms              = varargin{arg_index+1};
+    <span class="keyword">elseif</span> strcmp(arg,<span class="string">'MarkerFaceColor'</span>) || strcmp(arg,<span class="string">'markerfacecolor'</span>)||strcmp(arg,<span class="string">'MFC'</span>)||strcmp(arg,<span class="string">'mfc'</span>)
+        mfc             = varargin{arg_index+1};
+    <span class="keyword">elseif</span> strcmp(arg,<span class="string">'LockOnMax'</span>) || strcmp(arg,<span class="string">'lockonmax'</span>)
+        LockOnMax       = varargin{arg_index+1};
+    <span class="keyword">elseif</span> strcmp(arg,<span class="string">'Spacing'</span>)   || strcmp(arg,<span class="string">'spacing'</span>)
+        Spacing         = varargin{arg_index+1};
+    <span class="keyword">elseif</span> strcmp(arg,<span class="string">'LegendLine'</span>)   || strcmp(arg,<span class="string">'legendline'</span>)
+        LegendLine      = varargin{arg_index+1};
+    <span class="keyword">else</span>
+        <span class="comment">% keep other params in arg list for line command</span>
+        varargInNoMk    = {varargInNoMk{:},  varargin{arg_index},  varargin{arg_index+1}};
+        <span class="keyword">if</span> ~strcmp(arg,<span class="string">'LineStyle'</span>) &amp;&amp; ~strcmp(arg,<span class="string">'linestyle'</span>)
+           <span class="comment">% exclude line params for marker only plot</span>
+           varargInNoMkNoLn = {varargInNoMkNoLn{:},  varargin{arg_index},  varargin{arg_index+1}};
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    arg_index = arg_index + 2;
+<span class="keyword">end</span>
+<span class="comment">%EXTRA DEFAULTS ARE SET HERE</span>
+<span class="keyword">if</span> isempty(lm),         lm          = <span class="string">'o'</span>   ; <span class="keyword">end</span>
+<span class="keyword">if</span> isempty(ms),         ms          = 10    ; <span class="keyword">end</span>
+<span class="keyword">if</span> isempty(mfc),        mfc         = <span class="string">'none'</span>; <span class="keyword">end</span>
+<span class="keyword">if</span> isempty(LockOnMax),  LockOnMax   = 1     ; <span class="keyword">end</span>
+<span class="keyword">if</span> isempty(Spacing),    Spacing     = <span class="string">'x'</span>   ; <span class="keyword">end</span> <span class="comment">%%'x' -&gt; marker delta-x constant; 'curve' : spacing constant along the curve length</span>
+<span class="keyword">if</span> isempty(LegendLine), LegendLine  = <span class="string">'on'</span>  ; <span class="keyword">end</span>
+
+<span class="comment">%-------------------------------------------------------------</span>
+<span class="comment">% Parse LineSpec string and other arguments</span>
+<span class="comment">% varargInNoMk     = list of property pairs, marker specs removed</span>
+<span class="comment">% varargInNoMkNoLn = list of property pairs, marker specs and line specs removed</span>
+<span class="keyword">function</span> [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargsLineSpec(linspec, extraArgs)
+<span class="comment">%          b     blue          .     point              -     solid</span>
+<span class="comment">%          g     green         o     circle             :     dotted</span>
+<span class="comment">%          r     red           x     x-mark             -.    dashdot</span>
+<span class="comment">%          c     cyan          +     plus               --    dashed</span>
+<span class="comment">%          m     magenta       *     star             (none)  no line</span>
+<span class="comment">%          y     yellow        s     square</span>
+<span class="comment">%          k     black         d     diamond</span>
+<span class="comment">%          w     white         v     triangle (down)</span>
+<span class="comment">%                              ^     triangle (up)</span>
+<span class="comment">%                              &lt;     triangle (left)</span>
+<span class="comment">%                              &gt;     triangle (right)</span>
+<span class="comment">%                              p     pentagram</span>
+<span class="comment">%                              h     hexagram</span>
+varargInNoMk     = {};
+varargInNoMkNoLn = {};
+
+foundLine           = false;
+stringSearch        = {<span class="string">'-.'</span>,<span class="string">'--'</span>,<span class="string">'-'</span>,<span class="string">':'</span>};
+<span class="keyword">for</span> ii=1:4
+    <span class="keyword">if</span> strfind(linspec, stringSearch{ii})
+        foundLine   = true;
+        ls          = stringSearch{ii};
+        linspec     = setdiff(linspec,ls);
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">if</span> foundLine
+    varargInNoMk    = {varargInNoMk{:},<span class="string">'lineStyle'</span>,ls};
+<span class="keyword">else</span>
+    varargInNoMk    = {varargInNoMk{:},<span class="string">'lineStyle'</span>,<span class="string">'-'</span>};
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~isempty(linspec)
+    foundCol            = false;
+    stringSearch        = {<span class="string">'b'</span>,<span class="string">'g'</span>,<span class="string">'r'</span>,<span class="string">'c'</span>,<span class="string">'m'</span>,<span class="string">'y'</span>,<span class="string">'k'</span>,<span class="string">'w'</span>};
+    <span class="keyword">for</span> ii=1:8
+        <span class="keyword">if</span> strfind(linspec, stringSearch{ii})
+            foundCol    = true;
+            colspec     = stringSearch{ii};
+            linspec     = setdiff(linspec,colspec);
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> foundCol
+        varargInNoMk    = {varargInNoMk{:},<span class="string">'color'</span>,colspec};
+        varargInNoMkNoLn    = {varargInNoMkNoLn{:},<span class="string">'color'</span>,colspec};
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~isempty(linspec)
+    foundMk             = false;
+    stringSearch        = {<span class="string">'.'</span>,<span class="string">'o'</span>,<span class="string">'x'</span>,<span class="string">'+'</span>,<span class="string">'*'</span>,<span class="string">'s'</span>,<span class="string">'d'</span>,<span class="string">'v'</span>,<span class="string">'^'</span>,<span class="string">'&lt;'</span>,<span class="string">'&gt;'</span>,<span class="string">'p'</span>,<span class="string">'h'</span>};
+    <span class="keyword">for</span> ii=1:13
+        <span class="keyword">if</span> strfind(linspec, stringSearch{ii})
+            foundMk     = true;
+            mkspec      = stringSearch{ii};
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> foundMk, lm = mkspec; <span class="keyword">else</span> lm = <span class="string">'none'</span>; <span class="keyword">end</span>
+<span class="keyword">else</span>
+    lm = <span class="string">'none'</span>;
+<span class="keyword">end</span>
+
+
+[extraArgs1,unused,lm2,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargs(extraArgs{:});
+<span class="keyword">if</span> strcmp(lm,<span class="string">'none'</span>) &amp;&amp; ~strcmp(lm2,<span class="string">'none'</span>) <span class="comment">%if other marker specified in Property Pairs take that one</span>
+    lm = lm2;
+<span class="keyword">end</span>
+varargInNoMk       = {varargInNoMk{:},extraArgs1{:}};
+varargInNoMkNoLn   = {varargInNoMkNoLn{:},extraArgs1{:}};
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% line_fewer_markers - line with controlled amount of markers and correct legend behaviour
+% 
+%   LINE_FEWER_MARKERS(X,Y,NUM_MARKERS) adds the line in vectors X and Y to the current axes
+%   with exactly NUM_MARKERS markers drawn.
+% 
+%   LINE_FEWER_MARKERS(X,Y,NUM_MARKERS,'PropertyName',PropertyValue,...) plots the data
+%   stored in the vectors X and Y.
+%
+%   LINE_FEWER_MARKERS returns handles to LINE/MARKER objects.
+% 
+%   [H1,H2,H3] = LINE_FEWER_MARKERS(X,Y,NUM_MARKERS,'PropertyName',PropertyValue,...) 
+%   performs the actions as above and returns the handles of all the plotted lines/markers.
+%   H1    = handle to the main marker(1 point); it may be put in array and used with legend
+%   H2    = handle to the continuous line (as in H2=plot())
+%   H3    = handle to all other markers
+%
+%   Property/Value pairs and descriptions:
+%       
+%       Spacing    - 'x'      : ordinary uniform along x
+%                  - 'curve'  : equal lengths along curve y(x)
+% 
+%       LockOnMax  - 0        : first marker on 1st data point
+%                  - 1        : offset all markers such that one marker on first max of y(x)
+% 
+%       LegendLine - 'on'     : default, reproduce linestyle also in legend
+%                  - 'off'    : shows only marker in legend
+% 
+%       LineSpec: same as for LINE: LineStyle,LineWidth,Marker,MarkerSize,MarkerFaceColor...
+%
+%
+%   Example: plot 3 curves with 9,9, and 15 markers each, using different input styles
+% 
+%      figure; hold on;
+%      t  = 0:0.005:pi;
+%      line_fewer_markers(t*180/pi,cos(t) ,9,  'REPLACE_WITH_DASH_DASHbs','spacing','curve');
+%      line_fewer_markers(t*180/pi,sin(t) ,9,  '-.ro','MarkerFaceColor','g', ...
+%                                                     'markersize',6,'linewidth',2);
+%      grey1 = [1 1 1]*0.5;
+%      line_fewer_markers(t*180/pi,sin(t).*cos(t) ,15, ':','marker','h','color',grey1, ...
+%                                    'markerfacecolor',grey1,'linewidth',2,'LockOnMax',1);
+%      leg = legend('cos','sin','sin*cos','location','best');
+%
+% Inspired by Ioannis Filippidis's answer: 
+% http://www.mathworks.com/matlabcentral/answers/2165-too-many-markers
+% 
+% rev.3, Massimo Ciacci, August 19, 2013
+% 
+function [H1,H2,H3] = line_fewer_markers(x,y,num_Markers, varargin)
+
+
+%% find marker spec in varargin and remove it; extract special params: LockOnMax,Spacing
+if mod(length(varargin),2)
+    if ischar(varargin{1})
+      linspec   = varargin{1};
+      extraArgs = varargin(2:end);
+      [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargsLineSpec(linspec,extraArgs);
+    else
+      error('odd sized [param | val] list, missing one param ?');
+    end
+else
+      [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargs(varargin{:});  
+end
+
+%% input size check
+if  isvector(x) &&  isvector(y)
+    % make x,y row vectors
+    if iscolumn(x), x = x.'; end
+    if iscolumn(y), y = y.'; end
+else
+    error('line_fewer_markers: input arguments must be 1D vectors');
+end
+
+% How the method works: plots 3 times: 
+% a) once only the line with all points with the style                                                'rREPLACE_WITH_DASH_DASH' and invisible handle, 
+% b) last time the markers, using fewer points with style                                             'ro' and again invisible handle.
+% c) once with a visible handle, only the first point, using the complete style you specified         (e.g. 'rREPLACE_WITH_DASH_DASHo')
+
+%% a) once only the line with all points with the style                                                                
+H2 = line(x   ,y   ,varargInNoMk{:});                               %no markers here
+hasbehavior(H2,'legend',0);                                         %prevent to appear in legends!
+
+%% b) last time the markers, using fewer points with style                                                             
+if     (strcmp(Spacing,'x') || strcmp(Spacing,'X'))
+    ti = round(linspace(1,length(x),num_Markers));
+elseif (strcmp(Spacing,'curve') || strcmp(Spacing,'Curve'))
+    scaleY     = 3/4; % 1/1 figure aspect ratio
+    yNrm       = (y-min(y))./(max(y)-min(y))*scaleY;                %NORMALIZE y scale in [0 1], height of display is prop to max(abs(y))        
+    xNrm       = (x-min(x))./(max(x)-min(x));                       %NORMALIZE x scale in [0 1]   
+    
+    if (sum(isinf(yNrm))>0) || sum(isinf(x))>0                      %spacing along curve not possible with infinites
+        ti = round(linspace(1,length(x),num_Markers)); 
+    else
+        t        = 1:length(x);                                
+        s        = [0 cumsum(sqrt(diff(xNrm).^2+diff(yNrm).^2))];   %measures length along the curve
+        si       = (0:num_Markers-1)*s(end)/(num_Markers-1);        %equally spaced lengths along the curve
+        si(end)  = s(end);                                          %fix last point to be within the curve                    
+        ti       = round(interp1(s,t,si));                          %find x index of markers
+    end
+else
+    error('invalid spacing parameter');
+end
+if LockOnMax
+    %set one ti on max if found
+    [Mv,idx]   = max(y); idx=idx(1);
+    [mv,idxti] = min(abs(idx-ti));
+    deltati    = ti(idxti)-idx;
+    ti         = max(1,min(ti-deltati,length(y)));
+end    
+xi = x(ti);
+yi = y(ti);           
+H3 = line(xi,yi,varargInNoMkNoLn{:},'Marker',lm,'MarkerSize',ms,'MarkerFaceColor',mfc,'LineStyle','none');  %plot markers only
+hasbehavior(H3,'legend',0); %prevent to appear in legends!
+
+%% c) once with a visible handle, only the first point, using the complete style you specified                         
+if strcmp(LegendLine,'on')
+    H1 = line(xi(1),yi(1),varargInNoMk{:},'Marker',lm,'MarkerSize',ms,'MarkerFaceColor',mfc);
+else
+    H1 = line(xi(1),yi(1),varargInNoMk{:},'linestyle','none','Marker',lm,'MarkerSize',ms,'MarkerFaceColor',mfc);
+end
+
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% PARSE FUNCTIONS
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% varargInNoMk = list of property pairs, marker specs removed 
+% varargInNoMkNoLn = list of property pairs, marker specs and line specs removed 
+function [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargs(varargin)
+lm =[]; ms =[]; mfc=[]; LockOnMax=[]; Spacing=[]; LegendLine=[];
+varargInNoMk = {};
+varargInNoMkNoLn = {};
+arg_index = 1;
+while arg_index <= length(varargin)
+	arg = varargin{arg_index};
+    % extract special params and marker specs from arg list
+    if strcmp(arg,'marker') || strcmp(arg,'Marker') || strcmp(arg,'Mk')  || strcmp(arg,'mk')
+        lm              = varargin{arg_index+1};
+    elseif strcmp(arg,'MarkerSize') || strcmp(arg,'markersize') || strcmp(arg,'Mks')  || strcmp(arg,'mks')
+        ms              = varargin{arg_index+1};        
+    elseif strcmp(arg,'MarkerFaceColor') || strcmp(arg,'markerfacecolor')||strcmp(arg,'MFC')||strcmp(arg,'mfc')
+        mfc             = varargin{arg_index+1};
+    elseif strcmp(arg,'LockOnMax') || strcmp(arg,'lockonmax')
+        LockOnMax       = varargin{arg_index+1};
+    elseif strcmp(arg,'Spacing')   || strcmp(arg,'spacing') 
+        Spacing         = varargin{arg_index+1};
+    elseif strcmp(arg,'LegendLine')   || strcmp(arg,'legendline') 
+        LegendLine      = varargin{arg_index+1};
+    else
+        % keep other params in arg list for line command
+        varargInNoMk    = {varargInNoMk{:},  varargin{arg_index},  varargin{arg_index+1}};
+        if ~strcmp(arg,'LineStyle') && ~strcmp(arg,'linestyle') 
+           % exclude line params for marker only plot
+           varargInNoMkNoLn = {varargInNoMkNoLn{:},  varargin{arg_index},  varargin{arg_index+1}};
+        end
+    end
+    arg_index = arg_index + 2;	
+end
+%EXTRA DEFAULTS ARE SET HERE
+if isempty(lm),         lm          = 'o'   ; end
+if isempty(ms),         ms          = 10    ; end
+if isempty(mfc),        mfc         = 'none'; end
+if isempty(LockOnMax),  LockOnMax   = 1     ; end
+if isempty(Spacing),    Spacing     = 'x'   ; end %%'x' -> marker delta-x constant; 'curve' : spacing constant along the curve length
+if isempty(LegendLine), LegendLine  = 'on'  ; end 
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% Parse LineSpec string and other arguments
+% varargInNoMk     = list of property pairs, marker specs removed 
+% varargInNoMkNoLn = list of property pairs, marker specs and line specs removed 
+function [varargInNoMk,varargInNoMkNoLn,lm,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargsLineSpec(linspec, extraArgs)
+%          b     blue          .     point              -     solid
+%          g     green         o     circle             :     dotted
+%          r     red           x     x-mark             -.    dashdot 
+%          c     cyan          +     plus               REPLACE_WITH_DASH_DASH    dashed   
+%          m     magenta       *     star             (none)  no line
+%          y     yellow        s     square
+%          k     black         d     diamond
+%          w     white         v     triangle (down)
+%                              ^     triangle (up)
+%                              <     triangle (left)
+%                              >     triangle (right)
+%                              p     pentagram
+%                              h     hexagram
+varargInNoMk     = {};
+varargInNoMkNoLn = {};
+
+foundLine           = false;
+stringSearch        = {'-.','REPLACE_WITH_DASH_DASH','-',':'};
+for ii=1:4
+    if strfind(linspec, stringSearch{ii})
+        foundLine   = true;
+        ls          = stringSearch{ii};
+        linspec     = setdiff(linspec,ls);
+        break
+    end
+end
+if foundLine
+    varargInNoMk    = {varargInNoMk{:},'lineStyle',ls};
+else
+    varargInNoMk    = {varargInNoMk{:},'lineStyle','-'};    
+end
+
+if ~isempty(linspec)
+    foundCol            = false;
+    stringSearch        = {'b','g','r','c','m','y','k','w'};
+    for ii=1:8
+        if strfind(linspec, stringSearch{ii})
+            foundCol    = true;
+            colspec     = stringSearch{ii};
+            linspec     = setdiff(linspec,colspec);
+            break
+        end
+    end
+    if foundCol
+        varargInNoMk    = {varargInNoMk{:},'color',colspec};
+        varargInNoMkNoLn    = {varargInNoMkNoLn{:},'color',colspec};
+    end    
+end
+
+if ~isempty(linspec)
+    foundMk             = false;
+    stringSearch        = {'.','o','x','+','*','s','d','v','^','<','>','p','h'};
+    for ii=1:13
+        if strfind(linspec, stringSearch{ii})
+            foundMk     = true;
+            mkspec      = stringSearch{ii};
+            break
+        end
+    end
+    if foundMk, lm = mkspec; else lm = 'none'; end
+else
+    lm = 'none';
+end
+
+
+[extraArgs1,unused,lm2,ms,mfc,LockOnMax,Spacing,LegendLine] = parseargs(extraArgs{:});
+if strcmp(lm,'none') && ~strcmp(lm2,'none') %if other marker specified in Property Pairs take that one
+    lm = lm2;
+end
+varargInNoMk       = {varargInNoMk{:},extraArgs1{:}};
+varargInNoMkNoLn   = {varargInNoMkNoLn{:},extraArgs1{:}};
+
+
+##### SOURCE END #####
+--></body></html>

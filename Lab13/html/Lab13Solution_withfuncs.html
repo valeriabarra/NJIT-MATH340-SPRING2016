@@ -1,0 +1,487 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 13 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-04-29"><meta name="DC.source" content="Lab13Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 13 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Problem 1: Implicit Euler Method</a></li></ul><h2>Called Functions</h2><ul><li><a href="#Euler">Euler </a></li><li><a href="#ImplicitEulerForLab13">ImplicitEulerForLab13 </a></li></ul></div><p>DUE Tuesday 04-26-2016 ;</p><h2>Problem 1: Implicit Euler Method<a name="2"></a></h2><p>Implement your own Implicit (backward) Euler's method to solve the IVP y'=-5*y, y(0)=1. Write your results in a table with columns in order: <img src="Lab13Solution_eq08062630503172331818.png" alt="$h$">, the approximated solution <img src="Lab13Solution_eq08366435799313302571.png" alt="$y_i$">, the error <img src="Lab13Solution_eq00622535249343384848.png" alt="$e_i= |Y(t) - y_i|$">, and the ratio <img src="Lab13Solution_eq03410699621458558452.png" alt="$R_i= \frac{e_{i-1}}{e_i}$">. What is the order of convergence? How can you infer it from the table? Finally, plot in the same figure the approximations <img src="Lab13Solution_eq08366435799313302571.png" alt="$y_i$"> you have found for all five values of <img src="Lab13Solution_eq08062630503172331818.png" alt="$h$"> together with the actual solution <img src="Lab13Solution_eq14526184200243615768.png" alt="$Y(t)$"> for <img src="Lab13Solution_eq00095434149174278085.png" alt="$t \in [0,2]$">.</p><p><b>Solution:</b></p><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>;
+<span class="comment">% function handle of the RHS function for the problem</span>
+f=@(t,y)(-5.*y);
+<span class="comment">% the actual solution</span>
+y=@(t)( exp(-5.*t));
+<span class="comment">% the vector of all h's</span>
+h=2.^(0:-1:-4);
+
+<span class="comment">% the IC given</span>
+w0=1;
+
+Markers = [<span class="string">'o'</span> <span class="string">'^'</span> <span class="string">'s'</span> <span class="string">'&gt;'</span> <span class="string">'&lt;'</span>]; <span class="comment">% just different symbols to plot</span>
+Colors = [<span class="string">'r'</span> <span class="string">'g'</span> <span class="string">'b'</span> <span class="string">'c'</span> <span class="string">'m'</span>]; <span class="comment">% different colors used for the different markers</span>
+
+<span class="comment">% the main cycle of the call of the function and display starts here</span>
+<span class="comment">% print the header of the table</span>
+fprintf(<span class="string">'\nProblem 1 Implicit Euler\n'</span>)
+fprintf(<span class="string">'__________________________________________________\n\n'</span>)
+fprintf(<span class="string">'h             w_i           Error           Ratio   \n'</span>)
+fprintf(<span class="string">'__________________________________________________\n'</span>)
+<span class="keyword">for</span> j=1:length(h)
+
+    t{j}=(0:h(j):2); <span class="comment">% domain</span>
+
+    <span class="comment">% the implicit method here:</span>
+     w{j} =ImplicitEulerForLab13(t{j}, w0,h(j));
+
+    Error(j)=abs(y(t{j}(end)) - w{j}(end));
+        <span class="comment">% print the table</span>
+
+    <span class="keyword">if</span> j==1
+        fprintf(<span class="string">'%5.4f     %7.4e      %8.4e  \n'</span>,h(j), w{j}(end) , Error(j))
+    <span class="keyword">else</span>
+        Ratio(j-1)=Error(j-1)/Error(j);
+        fprintf(<span class="string">'%5.4f     %7.4e      %8.4e     %7.4f \n'</span>,h(j),w{j}(end)  ,Error(j), Ratio(j-1))
+    <span class="keyword">end</span>
+
+
+    <span class="comment">% plots of all the approximations here</span>
+    line_fewer_markers(t{j},w{j},2*j,Markers(j),<span class="string">'MarkerFaceColor'</span>,Colors(j),<span class="string">'MarkerSize'</span>,5);
+    hold <span class="string">on</span>
+    <span class="comment">% plotting here</span>
+    <span class="keyword">if</span> j==length(h)
+        plot(t{j},y(t{j}),<span class="string">'--r'</span>) <span class="comment">% plots the real solution only the last time</span>
+        hold <span class="string">on</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+fprintf(<span class="string">'__________________________________________________\n'</span>)
+
+<span class="comment">% attributes of the figure here</span>
+title(<span class="string">'Problem 1: Implicit Euler'</span>)
+xlabel(<span class="string">'t'</span>)
+ylabel(<span class="string">'w'</span>)
+box <span class="string">on</span>
+legend({<span class="string">'$w_{h=1}$'</span>,<span class="string">'$w_{h=1/2}$'</span>,<span class="string">'$w_{h=1/4}$'</span>,<span class="string">'$w_{h=1/8}$'</span>,<span class="string">'$w_{h=1/16}$'</span>,<span class="string">'y'</span>},<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>);
+
+
+figure; <span class="comment">% opens up a new figure</span>
+
+<span class="comment">% print the header of the table</span>
+fprintf(<span class="string">'\nProblem 1 Explicit Euler\n'</span>)
+fprintf(<span class="string">'__________________________________________________\n\n'</span>)
+fprintf(<span class="string">'h             w_i           Error           Ratio   \n'</span>)
+fprintf(<span class="string">'__________________________________________________\n'</span>)
+<span class="keyword">for</span> j=1:length(h)
+
+    <span class="comment">% the explicit method here:</span>
+     wE{j} = Euler(f, t{j}, w0,h(j));
+
+
+    ErrorE(j)=abs(y(t{j}(end)) - wE{j}(end));
+        <span class="comment">% print the table</span>
+
+    <span class="keyword">if</span> j==1
+        fprintf(<span class="string">'%5.4f     %7.4e      %8.4e  \n'</span>,h(j), wE{j}(end) , ErrorE(j))
+    <span class="keyword">else</span>
+        RatioE(j-1)=ErrorE(j-1)/ErrorE(j);
+        fprintf(<span class="string">'%5.4f     %7.4e      %8.4e     %7.4f \n'</span>,h(j),wE{j}(end)  ,ErrorE(j), RatioE(j-1))
+    <span class="keyword">end</span>
+
+
+    <span class="comment">% plots of all the approximations here</span>
+    line_fewer_markers(t{j},wE{j},2*j,Markers(j),<span class="string">'MarkerFaceColor'</span>,Colors(j),<span class="string">'MarkerSize'</span>,5);
+    hold <span class="string">on</span>
+    <span class="comment">% plotting here</span>
+    <span class="keyword">if</span> j==length(h)
+        plot(t{j},y(t{j}),<span class="string">'--r'</span>) <span class="comment">% plots the real solution only the last time</span>
+        hold <span class="string">on</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+fprintf(<span class="string">'__________________________________________________\n'</span>)
+
+<span class="comment">% attributes of the figure here</span>
+title(<span class="string">'Problem 1: Explicit Euler'</span>)
+xlabel(<span class="string">'t'</span>)
+ylabel(<span class="string">'w'</span>)
+box <span class="string">on</span>
+legend({<span class="string">'$w_{h=1}$'</span>,<span class="string">'$w_{h=1/2}$'</span>,<span class="string">'$w_{h=1/4}$'</span>,<span class="string">'$w_{h=1/8}$'</span>,<span class="string">'$w_{h=1/16}$'</span>,<span class="string">'y'</span>},<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>);
+</pre><pre class="codeoutput">
+Problem 1 Implicit Euler
+__________________________________________________
+
+h             w_i           Error           Ratio   
+__________________________________________________
+1.0000     2.7778e-02      2.7732e-02  
+0.5000     6.6639e-03      6.6185e-03      4.1901 
+0.2500     1.5224e-03      1.4770e-03      4.4809 
+0.1250     4.2301e-04      3.7761e-04      3.9116 
+0.0625     1.6627e-04      1.2087e-04      3.1240 
+__________________________________________________
+
+Problem 1 Explicit Euler
+__________________________________________________
+
+h             w_i           Error           Ratio   
+__________________________________________________
+1.0000     1.6000e+01      1.6000e+01  
+0.5000     5.0625e+00      5.0625e+00      3.1605 
+0.2500     1.5259e-05      3.0141e-05     167958.2950 
+0.1250     1.5293e-07      4.5247e-05      0.6661 
+0.0625     6.2048e-06      3.9195e-05      1.1544 
+__________________________________________________
+</pre><img vspace="5" hspace="5" src="Lab13Solution_01.png" alt=""> <img vspace="5" hspace="5" src="Lab13Solution_02.png" alt=""> <p><b>Comments on Results:</b> Even though Implicit (backward) Euler's scheme is still of first order, in this particular exercise we see that the ratio between two consecutive errors is roughly 4, as h was halved (inidcating that the scheme was roughly of quadratic order). The advantage of using an Implicit scheme rather than an Explicit one stands in the fact that the approximated solution is less sensitive to variations of the step size h. The explicit method needs to satisfy stability condition on the step size (this should be sufficiently small) to have reliable results. While the Implicit method is unconditionally stable (the reliability of the method does not depend on the step size chosen).</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 13 Solution
+% Lab Instructor: Valeria Barra
+%%
+% DUE Tuesday 04-26-2016 ;
+
+%% Problem 1: Implicit Euler Method
+% Implement your own Implicit (backward) Euler's method to solve the IVP
+% y'=-5*y, y(0)=1. Write your results in a table with columns in order: $h$, the approximated solution $y_i$, the error $e_i= |Y(t) - y_i|$, and the ratio $R_i= \frac{e_{i-1}}{e_i}$. What is the order of convergence? How can you infer it from the table? Finally, plot in the same figure the approximations $y_i$ you have found for all five values of $h$ together with the actual solution $Y(t)$ for $t \in [0,2]$.
+
+%%
+% *Solution:*
+
+clear all; close all;
+% function handle of the RHS function for the problem
+f=@(t,y)(-5.*y);
+% the actual solution
+y=@(t)( exp(-5.*t));
+% the vector of all h's
+h=2.^(0:-1:-4);
+
+% the IC given
+w0=1;
+
+Markers = ['o' '^' 's' '>' '<']; % just different symbols to plot
+Colors = ['r' 'g' 'b' 'c' 'm']; % different colors used for the different markers
+
+% the main cycle of the call of the function and display starts here
+% print the header of the table
+fprintf('\nProblem 1 Implicit Euler\n')
+fprintf('__________________________________________________\n\n')
+fprintf('h             w_i           Error           Ratio   \n')
+fprintf('__________________________________________________\n')
+for j=1:length(h)
+
+    t{j}=(0:h(j):2); % domain 
+    
+    % the implicit method here:
+     w{j} =ImplicitEulerForLab13(t{j}, w0,h(j));
+
+    Error(j)=abs(y(t{j}(end)) - w{j}(end));
+        % print the table
+        
+    if j==1 
+        fprintf('%5.4f     %7.4e      %8.4e  \n',h(j), w{j}(end) , Error(j))
+    else
+        Ratio(j-1)=Error(j-1)/Error(j);
+        fprintf('%5.4f     %7.4e      %8.4e     %7.4f \n',h(j),w{j}(end)  ,Error(j), Ratio(j-1))
+    end
+
+   
+    % plots of all the approximations here
+    line_fewer_markers(t{j},w{j},2*j,Markers(j),'MarkerFaceColor',Colors(j),'MarkerSize',5);
+    hold on
+    % plotting here
+    if j==length(h)
+        plot(t{j},y(t{j}),'REPLACE_WITH_DASH_DASHr') % plots the real solution only the last time
+        hold on
+    end
+
+end
+fprintf('__________________________________________________\n')
+
+% attributes of the figure here
+title('Problem 1: Implicit Euler')
+xlabel('t')
+ylabel('w')
+box on
+legend({'$w_{h=1}$','$w_{h=1/2}$','$w_{h=1/4}$','$w_{h=1/8}$','$w_{h=1/16}$','y'},'interpreter','latex','location','northwest');
+
+
+figure; % opens up a new figure
+
+% print the header of the table
+fprintf('\nProblem 1 Explicit Euler\n')
+fprintf('__________________________________________________\n\n')
+fprintf('h             w_i           Error           Ratio   \n')
+fprintf('__________________________________________________\n')
+for j=1:length(h)
+
+    % the explicit method here:
+     wE{j} = Euler(f, t{j}, w0,h(j));
+
+
+    ErrorE(j)=abs(y(t{j}(end)) - wE{j}(end));
+        % print the table
+        
+    if j==1 
+        fprintf('%5.4f     %7.4e      %8.4e  \n',h(j), wE{j}(end) , ErrorE(j))
+    else
+        RatioE(j-1)=ErrorE(j-1)/ErrorE(j);
+        fprintf('%5.4f     %7.4e      %8.4e     %7.4f \n',h(j),wE{j}(end)  ,ErrorE(j), RatioE(j-1))
+    end
+
+   
+    % plots of all the approximations here
+    line_fewer_markers(t{j},wE{j},2*j,Markers(j),'MarkerFaceColor',Colors(j),'MarkerSize',5);
+    hold on
+    % plotting here
+    if j==length(h)
+        plot(t{j},y(t{j}),'REPLACE_WITH_DASH_DASHr') % plots the real solution only the last time
+        hold on
+    end
+
+end
+fprintf('__________________________________________________\n')
+
+% attributes of the figure here
+title('Problem 1: Explicit Euler')
+xlabel('t')
+ylabel('w')
+box on
+legend({'$w_{h=1}$','$w_{h=1/2}$','$w_{h=1/4}$','$w_{h=1/8}$','$w_{h=1/16}$','y'},'interpreter','latex','location','northwest');
+
+
+%%
+% *Comments on Results:*
+% Even though Implicit (backward) Euler's scheme is still of first order,
+% in this particular exercise we see that the ratio between two consecutive
+% errors is roughly 4, as h was halved (inidcating that the scheme was roughly of quadratic order). The advantage of using an Implicit
+% scheme rather than an Explicit one stands in the fact that the
+% approximated solution is less sensitive to variations of the step size h.
+% The explicit method needs to satisfy stability condition on the step
+% size (this should be sufficiently small) to have reliable results. While
+% the Implicit method is unconditionally stable (the reliability of the
+% method does not depend on the step size chosen).
+
+
+##### SOURCE END #####
+--></body></html>
+<a name="Euler"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Euler</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-04-29"><meta name="DC.source" content="Euler.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [w]=Euler(f, t, y0,h)
+<span class="comment">% this function implements Euler scheme for an IVP. The IC is given as</span>
+<span class="comment">% argument together with the domain vector t and the function of the RHS of</span>
+<span class="comment">% the ODE f and the mesh spacing h.</span>
+w(1) = y0;
+n=length(t);
+<span class="keyword">for</span> i = 1:n-1 <span class="comment">% subtract one because the value for t0=0 is already assigned by the IC, so we don't need to solve for that</span>
+    w(i+1) = w(i) + h.*f(t(i),w(i))';
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="ImplicitEulerForLab13"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ImplicitEulerForLab13</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-04-29"><meta name="DC.source" content="ImplicitEulerForLab13.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ w ] =ImplicitEulerForLab13(t, y0,h)
+<span class="comment">% this function implements Implicit Euler scheme specifically for the IVP y'=2*y. The IC is given as</span>
+<span class="comment">% argument together with the domain vector t, and the mesh spacing h.</span>
+
+w(1) = y0;
+n=length(t);
+ <span class="keyword">for</span> i=1:n-1
+     w(i+1)=w(i)/(1 + 5*h);
+ <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>

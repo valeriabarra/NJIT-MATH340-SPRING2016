@@ -1,0 +1,586 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 8 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-23"><meta name="DC.source" content="Lab8Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 8 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Problem 1: Numerical Differentiation - First Order Forward Derivative VS  First Order Centered Derivative</a></li><li><a href="#5">Problem 2: Numerical Differentiation - Centered VS Truncated Derivative</a></li></ul><h2>Called Functions</h2><ul><li><a href="#FirstCenteredDiff">FirstCenteredDiff </a></li><li><a href="#FirstForwardDiff">FirstForwardDiff </a></li><li><a href="#SecondCenteredDiff">SecondCenteredDiff </a></li><li><a href="#SecondCenteredDiffRoundedOff">SecondCenteredDiffRoundedOff </a></li></ul></div><p>DUE Tuesday 03-22-2016</p><h2>Problem 1: Numerical Differentiation - First Order Forward Derivative VS  First Order Centered Derivative<a name="2"></a></h2><p>Use the first order forward and centered finite difference scheme to approximate the first derivative of the function <img src="Lab8Solution_eq15573134296439028215.png" alt="$f(x)=exp(x)$"> at the point <img src="Lab8Solution_eq14282395122267320819.png" alt="$x_0= 0$">, with <img src="Lab8Solution_eq18306079463268541373.png" alt="$h= 10^{-n}$">, with <img src="Lab8Solution_eq01782668972121416303.png" alt="$n=1,2, \ldots, 9$">. Write your results and errors in a table to compare the order of accuracy of the two schemes.</p><p><b>Solution:</b></p><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
+syms <span class="string">x</span>;
+f=exp(x);
+x0=0;
+h=10.^-(1:9);
+FirstDiffExact=diff(f);
+FirstDiffEval=double(subs(FirstDiffExact,0));
+fprintf(<span class="string">'_________________________________________________Problem 1 Table________________________________________________________________________________\n\n'</span>)
+fprintf(<span class="string">'      %s           %s          %s           %s               %s           %s        %s   \n'</span>,<span class="string">'h'</span>,<span class="string">'D_f(f)'</span>,<span class="string">'Err D_f(f)'</span>,<span class="string">'D_c(f)'</span>,<span class="string">'Err D_c(f)'</span>,<span class="string">'Ratio Err_D_f(f)'</span>,<span class="string">'Ratio Err_D_c(f)'</span>)
+fprintf(<span class="string">'________________________________________________________________________________________________________________________________________________\n\n'</span>)
+<span class="keyword">for</span> i=1:length(h)
+    DFirstForward(i)=FirstForwardDiff(f,x,x0,h(i));
+    DFirstCentered(i)=FirstCenteredDiff(f,x,x0,h(i));
+    ErrorForward(i)=abs(FirstDiffEval - (DFirstForward(i)));
+    ErrorCentered(i)=abs(FirstDiffEval -(DFirstCentered(i)));
+    <span class="keyword">if</span> i&gt;=2
+        RatioForward(i-1)=ErrorForward(i)/ErrorForward(i-1);
+        RatioCentered(i-1)=ErrorCentered(i)/ErrorCentered(i-1);
+        fprintf(<span class="string">' %2.0e    %16.14f    %16.14f     %16.14f       %16.14f           % 8.2g              % 8.2g \n'</span>,h(i),(DFirstForward(i)),ErrorForward(i),(DFirstCentered(i)),ErrorCentered(i),RatioForward(i-1),RatioCentered(i-1) );
+    <span class="keyword">else</span>
+        fprintf(<span class="string">' %2.0e    %16.14f    %16.14f     %16.14f       %16.14f \n'</span>,h(i),(DFirstForward(i)),ErrorForward(i),(DFirstCentered(i)),ErrorCentered(i));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+fprintf(<span class="string">'________________________________________________________________________________________________________________________________________________\n\n\n'</span>)
+</pre><pre class="codeoutput">_________________________________________________Problem 1 Table________________________________________________________________________________
+
+      h           D_f(f)          Err D_f(f)           D_c(f)               Err D_c(f)           Ratio Err_D_f(f)        Ratio Err_D_c(f)   
+________________________________________________________________________________________________________________________________________________
+
+ 1e-01    1.05170918075648    0.05170918075648     1.00166750019844       0.00166750019844 
+ 1e-02    1.00501670841679    0.00501670841679     1.00001666674999       0.00001666674999              0.097                  0.01 
+ 1e-03    1.00050016670838    0.00050016670838     1.00000016666668       0.00000016666668                0.1                  0.01 
+ 1e-04    1.00005000166714    0.00005000166714     1.00000000166689       0.00000000166689                0.1                  0.01 
+ 1e-05    1.00000500000696    0.00000500000696     1.00000000001210       0.00000000001210                0.1                0.0073 
+ 1e-06    1.00000049996218    0.00000049996218     0.99999999997324       0.00000000002676                0.1                   2.2 
+ 1e-07    1.00000004943368    0.00000004943368     0.99999999947364       0.00000000052636              0.099                    20 
+ 1e-08    0.99999999392253    0.00000000607747     0.99999999392253       0.00000000607747               0.12                    12 
+ 1e-09    1.00000008274037    0.00000008274037     1.00000002722922       0.00000002722922                 14                   4.5 
+________________________________________________________________________________________________________________________________________________
+
+
+</pre><p><b>Conclusions:</b> We can see that the centered derivative is more accurate than the forward one (second order of accuracy vs first). Since we divide h by ten, we can see that the error ratio is roughly 0.1 for the first order scheme (i. e. the error also is divided by ten), while it is roughly 0.01 for the second order scheme. These ratios eventually blow up for small values of h due to h being to small (dividing approximately by zero propagates the error)</p><h2>Problem 2: Numerical Differentiation - Centered VS Truncated Derivative<a name="5"></a></h2><p>Use the centered finite difference scheme to approximate the second derivative of the function <img src="Lab8Solution_eq16603406769994427086.png" alt="$f(x)= \cos(x)$"> at the point <img src="Lab8Solution_eq03288650301883965548.png" alt="$x_0= \pi / 6$">, with <img src="Lab8Solution_eq08919640742926158142.png" alt="$h= 2^{-n}$">, with <img src="Lab8Solution_eq01782668972121416303.png" alt="$n=1,2, \ldots, 9$">. Do the same with a truncated version of the evaluations of the function <img src="Lab8Solution_eq12481806118131560334.png" alt="$\hat{f}(x_i)$">, up to 6 digits of precision. Write your results and errors in a table and compare the exact evaluations and the truncated ones.</p><p><b>Solution:</b></p><pre class="codeinput">syms <span class="string">x</span>;
+f=cos(x);
+x0=pi/6;
+den=(2.^(1:9));
+h=1./den;
+
+CenteredDiffExact=diff(f,2);
+CenteredDiffEval=double(subs(CenteredDiffExact,pi/6));
+
+fprintf(<span class="string">'_____________________________________________Problem 2 Table_______________________________________________________________________________\n\n'</span>)
+fprintf(<span class="string">'      %s           %s          %s         %s        %s      %s      %s \n'</span>,<span class="string">'h'</span>,<span class="string">'D_c^2(f)'</span>,<span class="string">'D_c^2(hat(f))'</span>,<span class="string">'Err D_c^2(f)'</span>,<span class="string">'Err D_c^2(hat(f))'</span>,<span class="string">'Ratio Err_E'</span>,<span class="string">'Ratio Err_Tr'</span>)
+fprintf(<span class="string">'___________________________________________________________________________________________________________________________________________\n\n'</span>)
+<span class="keyword">for</span> i=1:length(h)
+    D(i)=SecondCenteredDiff(f,x0,h(i));
+    DRound(i)=SecondCenteredDiffRoundedOff(f,x0,h(i));
+    ErrorExact(i)=abs(CenteredDiffEval - (D(i)));
+    ErrorRound(i)=abs(CenteredDiffEval - (DRound(i)));
+    <span class="keyword">if</span> i&gt;=2
+        RatioExact(i-1)=ErrorExact(i)/ErrorExact(i-1);
+        RatioRound(i-1)=ErrorRound(i)/ErrorRound(i-1);
+        fprintf(<span class="string">' %3.0i / %3.0i    %16.14f    %16.14f     %16.14f     %16.14f       % 8.2g         % 8.2g \n'</span>,1,den(i),(D(i)),(DRound(i)),ErrorExact(i),(ErrorRound(i)),RatioExact(i-1),(RatioRound(i-1)) );
+    <span class="keyword">else</span>
+        fprintf(<span class="string">' %3.0i / %3.0i    %16.14f    %16.14f     %16.14f     %16.14f \n'</span>,1,den(i),(D(i)),(DRound(i)),ErrorExact(i),(ErrorRound(i)));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+fprintf(<span class="string">'___________________________________________________________________________________________________________________________________________\n\n\n'</span>)
+
+<span class="comment">% plotting here</span>
+line_fewer_markers(h,ErrorExact,5,<span class="string">'o-.r'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'r'</span>,<span class="string">'MarkerSize'</span>,6,<span class="string">'LineWidth'</span>,1.5);
+hold <span class="string">on</span>
+line_fewer_markers(h,ErrorRound,8,<span class="string">'p--'</span>,<span class="string">'MarkerSize'</span>,10,<span class="string">'MarkerFaceColor'</span>,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1.5);
+legend({<span class="string">'Error of Exact Evaluation'</span>,<span class="string">'Error of Rounded Evaluation'</span>});
+title(<span class="string">'Problem 2: Errors vs h'</span>);
+box <span class="string">on</span>;
+xlabel(<span class="string">'h'</span>);
+ylabel(<span class="string">'Error'</span>);
+</pre><pre class="codeoutput">_____________________________________________Problem 2 Table_______________________________________________________________________________
+
+      h           D_c^2(f)          D_c^2(hat(f))         Err D_c^2(f)        Err D_c^2(hat(f))      Ratio Err_E      Ratio Err_Tr 
+___________________________________________________________________________________________________________________________________________
+
+   1 /   2    -0.84813289015317    -0.84812800000000     0.01789251363127     0.01789740378444 
+   1 /   4    -0.86152424130301    -0.86150400000000     0.00450116248143     0.00452140378444           0.25             0.25 
+   1 /   8    -0.86489835368714    -0.86483200000001     0.00112705009730     0.00119340378443           0.25             0.26 
+   1 /  16    -0.86574353117766    -0.86553600000002     0.00028187260678     0.00048940378442           0.25             0.41 
+   1 /  32    -0.86595492875063    -0.86528000000010     0.00007047503381     0.00074540378434           0.25              1.5 
+   1 /  64    -0.86600778459524    -0.86016000000063     0.00001761918920     0.00586540378381           0.25              7.9 
+   1 / 128    -0.86602099895754    -0.85196800000085     0.00000440482690     0.01405740378359           0.25              2.4 
+   1 / 256    -0.86602430256607    -0.78643200000806     0.00000110121836     0.07959340377638           0.25              5.7 
+   1 / 512    -0.86602512843092    -0.78643200002261     0.00000027535352     0.07959340376182           0.25                1 
+___________________________________________________________________________________________________________________________________________
+
+
+</pre><img vspace="5" hspace="5" src="Lab8Solution_01.png" alt=""> <p><b>Conclusions:</b> We can see how with the truncated version of the function, the round off errors affect the accuracy of the calculation of the second derivative. In fact, while the error for exact evaluated <img src="Lab8Solution_eq15213220123979548379.png" alt="$D_c^2(f(x_0))$"> decreases as h decreases, the one for the truncated one <img src="Lab8Solution_eq10024958704305693806.png" alt="$D_c^2(\hat{f}(x_0))$"> decreases initially but then after a certain treshold, increases rapidly, giving a less accurate result.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 8 Solution
+% Lab Instructor: Valeria Barra
+%%
+% DUE Tuesday 03-22-2016
+
+%% Problem 1: Numerical Differentiation - First Order Forward Derivative VS  First Order Centered Derivative
+% Use the first order forward and centered finite difference scheme to approximate the first derivative of the function $f(x)=exp(x)$ at the point $x_0= 0$, with $h= 10^{-n}$, with $n=1,2, \ldots, 9$. Write your results and errors in a table to compare the order of accuracy of the two schemes. 
+
+%%
+% *Solution:*
+clear all; clc; close all;
+syms x;
+f=exp(x);
+x0=0;
+h=10.^-(1:9);
+FirstDiffExact=diff(f);
+FirstDiffEval=double(subs(FirstDiffExact,0));
+fprintf('_________________________________________________Problem 1 Table________________________________________________________________________________\n\n')
+fprintf('      %s           %s          %s           %s               %s           %s        %s   \n','h','D_f(f)','Err D_f(f)','D_c(f)','Err D_c(f)','Ratio Err_D_f(f)','Ratio Err_D_c(f)')
+fprintf('________________________________________________________________________________________________________________________________________________\n\n')
+for i=1:length(h)
+    DFirstForward(i)=FirstForwardDiff(f,x,x0,h(i));
+    DFirstCentered(i)=FirstCenteredDiff(f,x,x0,h(i));
+    ErrorForward(i)=abs(FirstDiffEval - (DFirstForward(i)));
+    ErrorCentered(i)=abs(FirstDiffEval -(DFirstCentered(i)));
+    if i>=2        
+        RatioForward(i-1)=ErrorForward(i)/ErrorForward(i-1);
+        RatioCentered(i-1)=ErrorCentered(i)/ErrorCentered(i-1);
+        fprintf(' %2.0e    %16.14f    %16.14f     %16.14f       %16.14f           % 8.2g              % 8.2g \n',h(i),(DFirstForward(i)),ErrorForward(i),(DFirstCentered(i)),ErrorCentered(i),RatioForward(i-1),RatioCentered(i-1) );
+    else
+        fprintf(' %2.0e    %16.14f    %16.14f     %16.14f       %16.14f \n',h(i),(DFirstForward(i)),ErrorForward(i),(DFirstCentered(i)),ErrorCentered(i));
+    end
+end
+fprintf('________________________________________________________________________________________________________________________________________________\n\n\n')
+
+%% 
+% *Conclusions:*
+% We can see that the centered derivative is more accurate than the forward
+% one (second order of accuracy vs first). Since we divide h by ten,
+% we can see that the error ratio is roughly 0.1 for the first order scheme
+% (i. e. the error also is divided by ten), while it is roughly 0.01 for
+% the second order scheme. These ratios eventually blow up for small
+% values of h due to h being to small (dividing approximately by zero propagates the error)
+
+%% Problem 2: Numerical Differentiation - Centered VS Truncated Derivative
+% Use the centered finite difference scheme to approximate the second derivative of the function $f(x)= \cos(x)$ at the point $x_0= \pi / 6$, with $h= 2^{-n}$, with $n=1,2, \ldots, 9$. Do the same with a truncated version of the evaluations of the function $\hat{f}(x_i)$, up to 6 digits of precision. Write your results and errors in a table and compare the exact evaluations and the truncated ones. 
+%%
+% *Solution:*
+syms x;
+f=cos(x);
+x0=pi/6;
+den=(2.^(1:9));
+h=1./den;
+
+CenteredDiffExact=diff(f,2);
+CenteredDiffEval=double(subs(CenteredDiffExact,pi/6));
+
+fprintf('_____________________________________________Problem 2 Table_______________________________________________________________________________\n\n')
+fprintf('      %s           %s          %s         %s        %s      %s      %s \n','h','D_c^2(f)','D_c^2(hat(f))','Err D_c^2(f)','Err D_c^2(hat(f))','Ratio Err_E','Ratio Err_Tr')
+fprintf('___________________________________________________________________________________________________________________________________________\n\n')
+for i=1:length(h)
+    D(i)=SecondCenteredDiff(f,x0,h(i));
+    DRound(i)=SecondCenteredDiffRoundedOff(f,x0,h(i));
+    ErrorExact(i)=abs(CenteredDiffEval - (D(i)));
+    ErrorRound(i)=abs(CenteredDiffEval - (DRound(i)));
+    if i>=2        
+        RatioExact(i-1)=ErrorExact(i)/ErrorExact(i-1);
+        RatioRound(i-1)=ErrorRound(i)/ErrorRound(i-1);
+        fprintf(' %3.0i / %3.0i    %16.14f    %16.14f     %16.14f     %16.14f       % 8.2g         % 8.2g \n',1,den(i),(D(i)),(DRound(i)),ErrorExact(i),(ErrorRound(i)),RatioExact(i-1),(RatioRound(i-1)) );
+    else
+        fprintf(' %3.0i / %3.0i    %16.14f    %16.14f     %16.14f     %16.14f \n',1,den(i),(D(i)),(DRound(i)),ErrorExact(i),(ErrorRound(i)));
+    end
+end
+fprintf('___________________________________________________________________________________________________________________________________________\n\n\n')
+
+% plotting here
+line_fewer_markers(h,ErrorExact,5,'o-.r','MarkerFaceColor','r','MarkerSize',6,'LineWidth',1.5);
+hold on
+line_fewer_markers(h,ErrorRound,8,'pREPLACE_WITH_DASH_DASH','MarkerSize',10,'MarkerFaceColor','b','LineWidth',1.5);
+legend({'Error of Exact Evaluation','Error of Rounded Evaluation'});
+title('Problem 2: Errors vs h');
+box on;
+xlabel('h');
+ylabel('Error');
+
+%% 
+% *Conclusions:*
+% We can see how with the truncated version of the function, the round off
+% errors affect the accuracy of the calculation of the second derivative.
+% In fact, while the error for exact evaluated $D_c^2(f(x_0))$ decreases
+% as h decreases, the one for the truncated one $D_c^2(\hat{f}(x_0))$
+% decreases initially but then after a certain treshold, increases rapidly,
+% giving a less accurate result.
+##### SOURCE END #####
+--></body></html>
+<a name="FirstCenteredDiff"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>FirstCenteredDiff</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-23"><meta name="DC.source" content="FirstCenteredDiff.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ D ] = FirstCenteredDiff(f,x,x0,h)
+<span class="comment">% this function computes the first order derivative of a given function</span>
+<span class="comment">% (given as a function handle in input), using the centered divided difference of</span>
+<span class="comment">% second order about the point x0 passed as an argument as well. The</span>
+<span class="comment">% spacing between two consecutive points h is also given as a parameter.</span>
+
+D=(double(subs(f,{x},x0+h))-double(subs(f,{x},x0-h)))/(2*h);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="FirstForwardDiff"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>FirstForwardDiff</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-23"><meta name="DC.source" content="FirstForwardDiff.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ D ] = FirstForwardDiff(f,x,x0,h)
+<span class="comment">% this function computes the first order derivative of a given function</span>
+<span class="comment">% (given as a function handle in input), using the forward divided difference of</span>
+<span class="comment">% first order about the point x0 passed as an argument as well. The</span>
+<span class="comment">% spacing between two consecutive points h is also given as a parameter.</span>
+
+D=(double(subs(f,{x},x0+h))-double(subs(f,{x},x0)))/h;
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="SecondCenteredDiff"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SecondCenteredDiff</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-23"><meta name="DC.source" content="SecondCenteredDiff.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ D ] = SecondCenteredDiff(f,x0,h)
+<span class="comment">% this function computes the second order derivative of a given function</span>
+<span class="comment">% (given as a symbolic function in input), using the centered divided difference of</span>
+<span class="comment">% second order about the point x0 passed as an argument as well. The</span>
+<span class="comment">% spacing between two consecutive points h is also given as a parameter.</span>
+
+D=(double(subs(f,x0+h)) -2*double(subs(f,x0)) +double(subs(f,x0-h)))/(h^2);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="SecondCenteredDiffRoundedOff"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SecondCenteredDiffRoundedOff</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-23"><meta name="DC.source" content="SecondCenteredDiffRoundedOff.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ D ] = SecondCenteredDiffRoundedOff(f,x0,h )
+<span class="comment">% this function computes the second order derivative of a given function</span>
+<span class="comment">% (given as a symbolic function in input), using the centered divided difference of</span>
+<span class="comment">% second order about the point x0 passed as an argument as well. The</span>
+<span class="comment">% spacing between two consecutive points h is also given as a parameter.</span>
+<span class="comment">% This version cuts off the evaluation of the function to 6 digits of</span>
+<span class="comment">% precision, to show the effects of roundoff errors in the derivative as h</span>
+<span class="comment">% decreases</span>
+
+D=(round(double(subs(f,x0+h))*10^6)/10^6 -2*round(double(subs(f,x0))*10^6)/10^6 +round(double(subs(f,x0-h))*10^6)/10^6)/(h^2);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>

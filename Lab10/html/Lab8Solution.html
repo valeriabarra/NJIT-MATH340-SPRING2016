@@ -1,0 +1,257 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 8 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-26"><meta name="DC.source" content="Lab8Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 8 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Problem 1: Gaussian Quadrature</a></li></ul></div><p>Friday Lab 03-27-2015, DUE Tuesday 03-31-2015 ; Monday Lab 03-30-2015, DUE Thursday 04-02-2015</p><h2>Problem 1: Gaussian Quadrature<a name="2"></a></h2><p>Use the transformation for your integrand <img src="Lab8Solution_eq00189490430827560599.png" alt="$I(f) = \int_{-1}^{1} f \left( \frac{(b-a)t +b+a }{2} \right)\frac{b-a}{2} dt$"> to approximate the Gaussian quadrature for n=2,4,6,8 for the functions:</p><p><img src="Lab8Solution_eq04491502532438333376.png" alt="$$(a) \int_1^2 \ln x dx=2 \ln 2 -1 \approx 0.38629436111989 $$"></p><p><img src="Lab8Solution_eq01074466398062541064.png" alt="$$(b) \int_0^4 \frac{x}{\sqrt{x^2+9}} dx=2  $$"></p><p><img src="Lab8Solution_eq18106605949151786894.png" alt="$$(c) \int_{0}^{1 } x e^x  dx= 1 $$"></p><p><img src="Lab8Solution_eq17892713237621478690.png" alt="$$(d) \int_{-1}^{2} x^5 dx = 10.5 $$"> For each of the approximated integrals <img src="Lab8Solution_eq03702718368013843533.png" alt="$I_n(f)$"> calculate the error from the exact value of the integral <img src="Lab8Solution_eq00956956661669953442.png" alt="$I(f)$">, given by <img src="Lab8Solution_eq02886242416040849002.png" alt="$Err_n=| I(f) - I_n(f) |$"> and the Ratio <img src="Lab8Solution_eq03418107905976663379.png" alt="$Ratio_n=\frac{Err_{n-1}}{Err_n}$"> and put your results in tabular form</p><pre class="codeinput"><span class="comment">%*Solution*:</span>
+clear <span class="string">all</span>; clc
+format <span class="string">long</span> <span class="string">e</span>
+<span class="comment">% an array of lower endpoints of integration for all exercises</span>
+a = [1,  0, 0, -1];
+<span class="comment">% an array of upper endpoints of integration for all exercises</span>
+b = [2, 4, 1, 2];
+<span class="comment">% an array with the tranformation variables needed</span>
+c= (b-a)./2;
+
+<span class="comment">% an array exact solutions:</span>
+IExacts = [0.38629436111989,2,1,10.5];
+<span class="comment">% a vector with all n's for each exercise:</span>
+n = 2:2:8;
+
+<span class="comment">% an array of character strings to be diplayed in the table of results</span>
+Strings=[<span class="string">'a'</span> <span class="string">'b'</span> <span class="string">'c'</span> <span class="string">'d'</span>];
+<span class="comment">% all original functions handles in a cell-array</span>
+f={@(x) log(x), @(x) x./(sqrt(9 + x.^2)), @(x) x.*exp(x),@(x) x.^5};
+
+<span class="keyword">for</span> i=1:length(a)
+    <span class="comment">% first define another function handle cell-array with the proper tranformation</span>
+    F{i} =@(t) c(i)*f{i}((b(i)+a(i) + t.*(b(i)-a(i)))./2);
+    fprintf(<span class="string">'______________________________________________________________\n \n'</span>)
+    disp([<span class="string">'Execution of part ('</span>,Strings(i),<span class="string">') f = '</span>,char(f{i})])
+    fprintf(<span class="string">'______________________________________________________________\n'</span>)
+    fprintf(<span class="string">'\n Exact solution of part (%s) = %f \n \n '</span>,Strings(i),IExacts(i))
+    fprintf(<span class="string">'\n  n     Gaussian Quadrature      Error_n         Ratio_n\n'</span>)
+    fprintf(<span class="string">'______________________________________________________________\n'</span>)
+    <span class="keyword">for</span> j = 1 : length(n)
+        <span class="comment">% calculate and print results</span>
+        In(j)=Gaussian(F{i},n(j));
+        Err(j)=abs(IExacts(i)- Gaussian(F{i},n(j)));
+        <span class="keyword">if</span> j&lt;2
+            fprintf(<span class="string">' %2i  %20.8e  %15.6e \n'</span>,n(j),In(j),Err(j));
+        <span class="keyword">else</span>
+            Ratio(j-1)=Err(j-1)/Err(j);
+            fprintf(<span class="string">' %2i  %20.8e  %15.6e  %15.6e \n'</span>,n(j),In(j),Err(j),Ratio(j-1))
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    fprintf(<span class="string">'______________________________________________________________\n \n \n'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">______________________________________________________________
+ 
+Execution of part (a) f = @(x)log(x)
+______________________________________________________________
+
+ Exact solution of part (a) = 0.386294 
+ 
+ 
+  n     Gaussian Quadrature      Error_n         Ratio_n
+______________________________________________________________
+  2        3.86594944e-01     3.005830e-04 
+  4        3.86294497e-01     1.358196e-07     2.213105e+03 
+  6        3.86294361e-01     7.870166e-11     1.725753e+03 
+  8        3.86294361e-01     3.852452e-11     2.042898e+00 
+______________________________________________________________
+ 
+ 
+______________________________________________________________
+ 
+Execution of part (b) f = @(x)x./(sqrt(9+x.^2))
+______________________________________________________________
+
+ Exact solution of part (b) = 2.000000 
+ 
+ 
+  n     Gaussian Quadrature      Error_n         Ratio_n
+______________________________________________________________
+  2        1.99171503e+00     8.284971e-03 
+  4        2.00004093e+00     4.093368e-05     2.023999e+02 
+  6        1.99999995e+00     4.865641e-08     8.412802e+02 
+  8        2.00000000e+00     3.578167e-10     1.359814e+02 
+______________________________________________________________
+ 
+ 
+______________________________________________________________
+ 
+Execution of part (c) f = @(x)x.*exp(x)
+______________________________________________________________
+
+ Exact solution of part (c) = 1.000000 
+ 
+ 
+  n     Gaussian Quadrature      Error_n         Ratio_n
+______________________________________________________________
+  2        9.98257837e-01     1.742163e-03 
+  4        9.99999992e-01     7.948769e-09     2.191739e+05 
+  6        1.00000000e+00     9.370282e-12     8.482956e+02 
+  8        1.00000000e+00     1.014595e-10     9.235490e-02 
+______________________________________________________________
+ 
+ 
+______________________________________________________________
+ 
+Execution of part (d) f = @(x)x.^5
+______________________________________________________________
+
+ Exact solution of part (d) = 10.500000 
+ 
+ 
+  n     Gaussian Quadrature      Error_n         Ratio_n
+______________________________________________________________
+  2        7.12500000e+00     3.375000e+00 
+  4        1.05000000e+01     6.145147e-10     5.492139e+09 
+  6        1.05000000e+01     8.833005e-10     6.957028e-01 
+  8        1.05000000e+01     1.092573e-09     8.084590e-01 
+______________________________________________________________
+ 
+ 
+</pre><p><b>Comments on Results:</b></p><p>We can see that for each execution of the code the error decreases as n increases. Generally Gaussian quadrature is better than other integration rules seen in the previous assignment (Trapezoid rule, Simpson rule and Midpoint rule). The degree of precision of a quadrature method is the degree for which all polynomial functions are integrated by the method with no error. In this case, you can see it from the polynomial function in ex. (d) of degree 5 (n+1 with n=4), the Gaussian quadrature with four points is already exact up to the 9th digit.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 8 Solution
+% Lab Instructor: Valeria Barra
+%%
+% Friday Lab 03-27-2015, DUE Tuesday 03-31-2015 ;
+% Monday Lab 03-30-2015, DUE Thursday 04-02-2015
+
+%% Problem 1: Gaussian Quadrature
+% Use the transformation for your integrand $I(f) = 
+% \int_{-1}^{1} f \left( \frac{(b-a)t +b+a }{2} \right)\frac{b-a}{2} dt$ to approximate
+% the Gaussian quadrature for n=2,4,6,8 for the functions:
+%
+% $$(a) \int_1^2 \ln x dx=2 \ln 2 -1 \approx 0.38629436111989 $$
+% 
+% $$(b) \int_0^4 \frac{x}{\sqrt{x^2+9}} dx=2  $$
+%
+% $$(c) \int_{0}^{1 } x e^x  dx= 1 $$
+%
+% $$(d) \int_{-1}^{2} x^5 dx = 10.5 $$
+% For each of the approximated integrals $I_n(f)$ calculate the error from the exact value of the integral $I(f)$, given by
+% $Err_n=| I(f) - I_n(f) |$ and the Ratio $Ratio_n=\frac{Err_{n-1}}{Err_n}$
+% and put your results in tabular form
+%%
+%*Solution*:
+clear all; clc
+format long e
+% an array of lower endpoints of integration for all exercises
+a = [1,  0, 0, -1];
+% an array of upper endpoints of integration for all exercises
+b = [2, 4, 1, 2];
+% an array with the tranformation variables needed
+c= (b-a)./2;
+
+% an array exact solutions:
+IExacts = [0.38629436111989,2,1,10.5];
+% a vector with all n's for each exercise:
+n = 2:2:8;
+
+% an array of character strings to be diplayed in the table of results
+Strings=['a' 'b' 'c' 'd'];
+% all original functions handles in a cell-array
+f={@(x) log(x), @(x) x./(sqrt(9 + x.^2)), @(x) x.*exp(x),@(x) x.^5};
+
+for i=1:length(a)    
+    % first define another function handle cell-array with the proper tranformation
+    F{i} =@(t) c(i)*f{i}((b(i)+a(i) + t.*(b(i)-a(i)))./2);
+    fprintf('______________________________________________________________\n \n')
+    disp(['Execution of part (',Strings(i),') f = ',char(f{i})])
+    fprintf('______________________________________________________________\n')
+    fprintf('\n Exact solution of part (%s) = %f \n \n ',Strings(i),IExacts(i))
+    fprintf('\n  n     Gaussian Quadrature      Error_n         Ratio_n\n')
+    fprintf('______________________________________________________________\n')
+    for j = 1 : length(n)
+        % calculate and print results
+        In(j)=Gaussian(F{i},n(j));
+        Err(j)=abs(IExacts(i)- Gaussian(F{i},n(j)));
+        if j<2
+            fprintf(' %2i  %20.8e  %15.6e \n',n(j),In(j),Err(j));
+        else
+            Ratio(j-1)=Err(j-1)/Err(j);
+            fprintf(' %2i  %20.8e  %15.6e  %15.6e \n',n(j),In(j),Err(j),Ratio(j-1))
+        end
+    end    
+    fprintf('______________________________________________________________\n \n \n')
+end
+%% 
+% *Comments on Results:*
+%
+% We can see that for each execution of the code the error decreases as n
+% increases. Generally Gaussian quadrature is better than other integration
+% rules seen in the previous assignment (Trapezoid rule, Simpson rule and
+% Midpoint rule). The degree of precision of a quadrature method is the degree for which all polynomial
+% functions are integrated by the method with no error. In this case, you
+% can see it from the polynomial function in ex. (d) of degree 5 (n+1 with n=4), the
+% Gaussian quadrature with four points is already exact up to the 9th digit.
+
+##### SOURCE END #####
+--></body></html>

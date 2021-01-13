@@ -1,0 +1,470 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab 3 Solution</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-11"><meta name="DC.source" content="Lab3Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Lab 3 Solution</h1><!--introduction--><p>Lab Instructor: Valeria Barra</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Problem 1.1: Problem 17 in the Homework</a></li><li><a href="#3">(a)</a></li><li><a href="#4">(b)</a></li><li><a href="#5">(c)</a></li><li><a href="#7">Problem 1.2</a></li><li><a href="#8">Problem 1.3</a></li><li><a href="#10">Problem 2</a></li></ul><h2>Called Functions</h2><ul><li><a href="#MyNewton">MyNewton </a></li><li><a href="#fixedpoint">fixedpoint </a></li></ul></div><p>DUE Thuesday 02-09-2016</p><pre class="codeinput">close <span class="string">all</span> <span class="comment">% it closes all open figures</span>
+tol = 10^(-6);
+N = 50;
+</pre><h2>Problem 1.1: Problem 17 in the Homework<a name="2"></a></h2><h2>(a)<a name="3"></a></h2><pre class="codeinput">f1 = @(x) ((1/2).*x + 1./x);
+x0=1;
+xx=linspace(1,2,1000); <span class="comment">% an array of values for plotting purposes</span>
+disp([<span class="string">'Execution of problem 17(a):'</span>])
+[xc,i]=fixedpoint(xx,f1, x0, N, tol);
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc)]);
+axis([xx(1) xx(end) 1 2])
+</pre><pre class="codeoutput">Execution of problem 17(a):
+We have recahed the desired tolerance
+The iteration took 6 steps , and the fixed point found is 1.4142
+</pre><img vspace="5" hspace="5" src="Lab3Solution_01.png" alt=""> <h2>(b)<a name="4"></a></h2><pre class="codeinput">f2 = @(x) ((2/3).*x + 2./(3.*x));
+disp([<span class="string">'Execution of problem 17(b):'</span>])
+[xc,i]=fixedpoint(xx,f2, x0, N, tol);
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc)]);
+axis([xx(1) xx(end) 1 2])
+</pre><pre class="codeoutput">Execution of problem 17(b):
+We have recahed the desired tolerance
+The iteration took 13 steps , and the fixed point found is 1.4142
+</pre><img vspace="5" hspace="5" src="Lab3Solution_02.png" alt=""> <h2>(c)<a name="5"></a></h2><pre class="codeinput">f3 = @(x) ((3/4).*x + 1./(2.*x));
+x0=1;
+xx=linspace(0,3,1000); <span class="comment">% an array of values for plotting purposes</span>
+disp([<span class="string">'Execution of problem 17(c):'</span>])
+[xc,i]=fixedpoint(xx,f3, x0, N, tol);
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc)]);
+axis([xx(1) xx(end) 1 2])
+</pre><pre class="codeoutput">Execution of problem 17(c):
+We have recahed the desired tolerance
+The iteration took 20 steps , and the fixed point found is 1.4142
+</pre><img vspace="5" hspace="5" src="Lab3Solution_03.png" alt=""> <p><b>Conclusions:</b> Clearly the first execution performs the best because the derivative of the function at the fixed point is much smaller than the other cases (close to zero)</p><h2>Problem 1.2<a name="7"></a></h2><pre class="codeinput">g1 = @(x)(2+(x - 2).^2);
+x0_1 = 2.8;
+<span class="comment">% to plot we define a domain</span>
+xx=linspace(1.5,3.5,1000); <span class="comment">% an array of values for plotting purposes</span>
+disp([<span class="string">'Execution of problem 1.2(a):'</span>])
+[xc,i]=fixedpoint(xx,g1, x0_1, N, tol);
+
+
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc)]);
+x0_2 = 3.1;
+disp([<span class="string">'Execution of problem 1.2(b):'</span>])
+[xc_2,i]=fixedpoint(xx,g1, x0_2, N, tol);
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc_2)]);
+axis([xx(1) xx(end) 1.5 3.5])
+</pre><pre class="codeoutput">Execution of problem 1.2(a):
+We have recahed the desired tolerance
+The iteration took 8 steps , and the fixed point found is 2
+Execution of problem 1.2(b):
+The iteration took 50 steps , and the fixed point found is Inf
+</pre><img vspace="5" hspace="5" src="Lab3Solution_04.png" alt=""> <img vspace="5" hspace="5" src="Lab3Solution_05.png" alt=""> <h2>Problem 1.3<a name="8"></a></h2><pre class="codeinput">g2 = @(x)(2+(x - 2).^3) ;
+x0_3 = 2.8;
+disp([<span class="string">'Execution of problem 1.3(a):'</span>])
+[xc_3, i]=fixedpoint(xx,g2, x0_3, N, tol);
+
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc_3)]);
+x0_4 = 3.1;
+disp([<span class="string">'Execution of problem 1.3(b):'</span>])
+[xc_4, i]=fixedpoint(xx,g2, x0_4, N, tol);
+
+disp([<span class="string">'The iteration took '</span>,num2str(i),<span class="string">' steps , and the fixed point found is '</span>, num2str(xc_4)]);
+axis([xx(1) xx(end) 1.5 3.5])
+</pre><pre class="codeoutput">Execution of problem 1.3(a):
+We have recahed the desired tolerance
+The iteration took 6 steps , and the fixed point found is 2
+Execution of problem 1.3(b):
+The iteration took 50 steps , and the fixed point found is Inf
+</pre><img vspace="5" hspace="5" src="Lab3Solution_06.png" alt=""> <img vspace="5" hspace="5" src="Lab3Solution_07.png" alt=""> <p><b>Conclusions:</b> For both Problems 1.2 and 1.3 the first initial guess leads to convergence, while the second one to divergence.</p><h2>Problem 2<a name="10"></a></h2><p>Implement your own Newton's method to solve Problems 19 and 21 in your Homework, with N = 50. Compare your results and the performance of your code with the one obtained through the bisection method in the Lab 2 Problems 1 and 3, respectively.</p><pre class="codeinput">syms <span class="string">x</span>;
+f = x.^3 - 9;
+N = 50;
+x0 = 1;
+tol = 1e-6;
+disp([<span class="string">'Execution of problem 19 in the homework'</span>])
+[X,err]=MyNewton(x,f,x0,tol,N);
+
+f2=( ( 50000 + 10000./x ).* exp(20.*x) -10000./x - 1000000);
+x0 = 0.01;
+disp([<span class="string">'Execution of problem 21 in the homework'</span>])
+[X,err]=MyNewton(x,f,x0,tol,N);
+</pre><pre class="codeoutput">Execution of problem 19 in the homework
+We have converged to the root, r = 2.0801 in 7 steps.
+Execution of problem 21 in the homework
+We have converged to the root, r = 2.0801 in 29 steps.
+</pre><p><b>Conclusions:</b> In the case of Problem 19 in the homework, Newton's method performs better than bisection. In fact, its convergence order is quadratic, while it was only linear for bisection method. In the case of Problem 21 in the homework instead, Newton's method performs worse (even though we start pretty close to the solution) because the derivative near the root is close to zero.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Lab 3 Solution
+% Lab Instructor: Valeria Barra
+%%
+% DUE Thuesday 02-09-2016
+
+close all % it closes all open figures
+tol = 10^(-6);
+N = 50;
+%% Problem 1.1: Problem 17 in the Homework
+%% (a)
+f1 = @(x) ((1/2).*x + 1./x);
+x0=1;
+xx=linspace(1,2,1000); % an array of values for plotting purposes
+disp(['Execution of problem 17(a):'])
+[xc,i]=fixedpoint(xx,f1, x0, N, tol);
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc)]);
+axis([xx(1) xx(end) 1 2])
+
+%% (b)
+f2 = @(x) ((2/3).*x + 2./(3.*x));
+disp(['Execution of problem 17(b):'])
+[xc,i]=fixedpoint(xx,f2, x0, N, tol);
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc)]);
+axis([xx(1) xx(end) 1 2])
+%% (c)
+f3 = @(x) ((3/4).*x + 1./(2.*x));
+x0=1;
+xx=linspace(0,3,1000); % an array of values for plotting purposes
+disp(['Execution of problem 17(c):'])
+[xc,i]=fixedpoint(xx,f3, x0, N, tol);
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc)]);
+axis([xx(1) xx(end) 1 2])
+
+%%
+% *Conclusions:*
+% Clearly the first execution performs the best because the derivative of
+% the function at the fixed point is much smaller than the other cases (close to zero)
+
+%% Problem 1.2
+g1 = @(x)(2+(x - 2).^2);
+x0_1 = 2.8; 
+% to plot we define a domain
+xx=linspace(1.5,3.5,1000); % an array of values for plotting purposes
+disp(['Execution of problem 1.2(a):'])
+[xc,i]=fixedpoint(xx,g1, x0_1, N, tol);
+
+
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc)]);
+x0_2 = 3.1;
+disp(['Execution of problem 1.2(b):'])
+[xc_2,i]=fixedpoint(xx,g1, x0_2, N, tol);
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc_2)]);
+axis([xx(1) xx(end) 1.5 3.5])
+
+%% Problem 1.3
+g2 = @(x)(2+(x - 2).^3) ;
+x0_3 = 2.8;
+disp(['Execution of problem 1.3(a):'])
+[xc_3, i]=fixedpoint(xx,g2, x0_3, N, tol);
+
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc_3)]);
+x0_4 = 3.1;
+disp(['Execution of problem 1.3(b):'])
+[xc_4, i]=fixedpoint(xx,g2, x0_4, N, tol);
+
+disp(['The iteration took ',num2str(i),' steps , and the fixed point found is ', num2str(xc_4)]);
+axis([xx(1) xx(end) 1.5 3.5])
+
+%%
+% *Conclusions:*
+% For both Problems 1.2 and 1.3 the first initial guess leads to
+% convergence, while the second one to divergence.
+
+%% Problem 2
+% Implement your own Newton's method to solve Problems 19 and 21 in your Homework, with N = 50. Compare your results and the performance of your code with the one obtained through the bisection method in the Lab 2 Problems 1 and 3, respectively.
+syms x;
+f = x.^3 - 9;
+N = 50;
+x0 = 1;
+tol = 1e-6;
+disp(['Execution of problem 19 in the homework'])
+[X,err]=MyNewton(x,f,x0,tol,N);
+
+f2=( ( 50000 + 10000./x ).* exp(20.*x) -10000./x - 1000000);
+x0 = 0.01;
+disp(['Execution of problem 21 in the homework'])
+[X,err]=MyNewton(x,f,x0,tol,N);
+
+%%
+% *Conclusions:*
+% In the case of Problem 19 in the homework, Newton's method performs
+% better than bisection. In fact, its convergence order is quadratic, while
+% it was only linear for bisection method. In the case of Problem 21 in the
+% homework instead, Newton's method performs worse (even though we start pretty close to the solution) because the derivative
+% near the root is close to zero.
+##### SOURCE END #####
+--></body></html>
+<a name="MyNewton"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MyNewton</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-11"><meta name="DC.source" content="MyNewton.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [X,err]=MyNewton(x,f,x0,tol,N)
+
+<span class="comment">% Input Arguments:</span>
+<span class="comment">% - x, the symbolic variable we are passing the function of</span>
+<span class="comment">% - f, the symbolic function we have in terms of x</span>
+<span class="comment">% - x0, the initial guess, starting point of our iteration</span>
+<span class="comment">% - tol, the desired tolerance up to which we accept our solution</span>
+<span class="comment">% - N, the max number of iterations reached in case of NOT convergence</span>
+
+<span class="comment">% Output Arguments:</span>
+<span class="comment">% - X is the vector of iterates</span>
+<span class="comment">% - err is the vector of all errors at each iteration</span>
+
+
+flag=1; <span class="comment">% case of insuccess</span>
+der_f=diff(f);
+root=0; err=0; <span class="comment">% initialize the output to zero</span>
+X(1)=x0; <span class="comment">% first entry of the array X of iterates is the initial guess</span>
+
+<span class="keyword">for</span> i=1:N
+    <span class="keyword">if</span> subs(der_f,{x},{X(i)})==0
+        disp(<span class="string">'ERROR: The derivative must not be zero!'</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">else</span>
+        X(i+1)= X(i) - subs(f,{x},{X(i)})/subs(der_f,{x},{X(i)});
+        err(i)=abs(X(i+1)-X(i));
+        <span class="keyword">if</span> (err(i)&lt;tol)
+            <span class="comment">%this is the check of convergence of our iterations. In</span>
+            <span class="comment">%positive case, we change the value of our flag variable to 0</span>
+            flag=0;
+            root=X(i+1);
+            disp([<span class="string">'We have converged to the root, r = '</span>,num2str(root),<span class="string">' in '</span>,num2str(i),<span class="string">' steps.'</span>]);
+        <span class="keyword">break</span>;
+        <span class="keyword">elseif</span> (i==N)
+            disp(<span class="string">'We have NOT converged. We have reached the maximum number of steps allowed.'</span>);
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
+<a name="fixedpoint"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>fixedpoint</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-11"><meta name="DC.source" content="fixedpoint.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [xc,i]=fixedpoint(xx,g, x0, N, tol)
+
+
+y=g(xx);
+figure; <span class="comment">% evry time we use this command we open a new figure</span>
+plot(xx,y);
+hold <span class="string">on</span> <span class="comment">% to add more graphs in the same figure</span>
+plot(xx,xx,<span class="string">'r:'</span>); <span class="comment">% plot the bisector line x=y to visualize the fixed point as the intersection of the two curves</span>
+box <span class="string">on</span>; <span class="comment">% it just looks prittier with a frame</span>
+
+xlabel(<span class="string">'x'</span>);
+ylabel(<span class="string">'y'</span>);
+title(<span class="string">'cobweb diagram'</span>)
+
+x(1)=x0;
+x(2)=g(x(1));
+
+<span class="comment">%i = 2; % initializes a counter at 2, since we have already assigned the first two x's</span>
+err(1) = abs(x(2)-x(1)); <span class="comment">% initializes the error needed the first time to enter the loop</span>
+error = tol + 1; <span class="comment">% something larger than tol for sure</span>
+<span class="keyword">for</span>  i = 2:N <span class="comment">% the first two values of x are already found</span>
+    <span class="keyword">if</span>  error &lt; tol
+        disp(<span class="string">'We have recahed the desired tolerance'</span>);
+        xc = x(i);
+        <span class="keyword">return</span>;
+    <span class="keyword">end</span>
+
+    plot([x(i) x(i)], [x(i) g(x(i))], <span class="string">'r.-'</span>); <span class="comment">% draw the vertical line</span>
+    hold <span class="string">on</span>;
+    plot([x(i)  g(x(i))], [ g(x(i))  g(x(i))], <span class="string">'r.-'</span>); <span class="comment">% draw the horizontal line</span>
+    drawnow; <span class="comment">% drawnow serves not to wait until the end of the loop for the plot to be executed</span>
+
+    x(i+1)=g(x(i));
+    err(i)= abs(x(i+1) - x(i));
+    error = err(i);
+<span class="keyword">end</span>
+xc=x(i+1); <span class="comment">% we store last value in a separate variable xc</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+\n
+--></body></html>
